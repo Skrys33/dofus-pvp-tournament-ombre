@@ -229,6 +229,16 @@ const resolvePlayersByName = (players) => {
   )
 }
 
+const BRACKET_CARD_HEIGHT = 82
+const BRACKET_BASE_GAP = 14
+
+const resolveRoundLayout = (roundIndex) => {
+  const centerDistance = (BRACKET_CARD_HEIGHT + BRACKET_BASE_GAP) * 2 ** roundIndex
+  const gap = Math.max(centerDistance - BRACKET_CARD_HEIGHT, BRACKET_BASE_GAP)
+  const offset = Math.max(centerDistance / 2 - BRACKET_CARD_HEIGHT / 2, 0)
+  return { gap, offset }
+}
+
 const resolveTeamScores = (score) => {
   if (typeof score !== 'string') return [null, null]
   const [teamAScore, teamBScore] = score.split('-').map((part) => part?.trim())
@@ -237,11 +247,15 @@ const resolveTeamScores = (score) => {
   return [Number.isNaN(parsedA) ? null : parsedA, Number.isNaN(parsedB) ? null : parsedB]
 }
 
-function MatchTeam({ name, isWinner, classes, score }) {
+function MatchTeam({ name, isWinner, classes, score, hasIncomingLink }) {
   const rowClass = `match-team ${isWinner ? 'winner' : ''}`.trim()
 
   return (
-    <div className={rowClass} data-outcome={isWinner ? 'win' : 'lose'}>
+    <div
+      className={rowClass}
+      data-outcome={isWinner ? 'win' : 'lose'}
+      data-incoming={hasIncomingLink ? 'true' : 'false'}
+    >
       <div className="match-team-classes" aria-label={`Classes de ${name}`}>
         {Array.isArray(classes) && classes.length > 0 ? (
           classes.map((className, index) => {
@@ -258,19 +272,36 @@ function MatchTeam({ name, isWinner, classes, score }) {
       </div>
       <span className="match-team-name">{name}</span>
       {score !== null ? <span className="match-team-score">{score}</span> : null}
+      {isWinner ? <span className="match-win-arrow" aria-hidden="true" /> : null}
     </div>
   )
 }
 
-function MatchCard({ match, playersByName }) {
+function MatchCard({ match, playersByName, roundIndex, hasNextRound }) {
   const teamA = match.teamA ?? 'TBD'
   const teamB = match.teamB ?? 'TBD'
   const [teamAScore, teamBScore] = resolveTeamScores(match.score)
 
   return (
-    <article className="match-card">
-      <MatchTeam name={teamA} isWinner={match.winner === teamA} classes={playersByName.get(teamA)} score={teamAScore} />
-      <MatchTeam name={teamB} isWinner={match.winner === teamB} classes={playersByName.get(teamB)} score={teamBScore} />
+    <article
+      className="match-card"
+      data-round-index={roundIndex}
+      data-has-outgoing={hasNextRound && Boolean(match.winner) ? 'true' : 'false'}
+    >
+      <MatchTeam
+        name={teamA}
+        isWinner={match.winner === teamA}
+        classes={playersByName.get(teamA)}
+        score={teamAScore}
+        hasIncomingLink={roundIndex > 0}
+      />
+      <MatchTeam
+        name={teamB}
+        isWinner={match.winner === teamB}
+        classes={playersByName.get(teamB)}
+        score={teamBScore}
+        hasIncomingLink={roundIndex > 0}
+      />
     </article>
   )
 }
@@ -296,16 +327,29 @@ function BracketPage() {
       ) : (
         <div className="tree-wrap" role="region" aria-label="Arbre de rencontres">
           <div className="bracket-grid">
-            {rounds.map((round) => (
+            {rounds.map((round, roundIndex) => {
+              const layout = resolveRoundLayout(roundIndex)
+              const hasNextRound = roundIndex < rounds.length - 1
+              return (
               <section key={round.key} className="round-column">
                 <h3 className="round-title">{formatRoundLabel(round.key)}</h3>
-                <div className="round-matches">
+                <div
+                  className="round-matches"
+                  style={{ '--round-gap': `${layout.gap}px`, '--round-offset': `${layout.offset}px` }}
+                >
                   {round.matches.map((match) => (
-                    <MatchCard key={match.id} match={match} playersByName={playersByName} />
+                    <MatchCard
+                      key={match.id}
+                      match={match}
+                      playersByName={playersByName}
+                      roundIndex={roundIndex}
+                      hasNextRound={hasNextRound}
+                    />
                   ))}
                 </div>
               </section>
-            ))}
+              )
+            })}
           </div>
         </div>
       )}
