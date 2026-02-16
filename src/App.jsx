@@ -161,8 +161,8 @@ function RankingPage() {
           <thead>
             <tr>
               <th className="col-rank">#</th>
-              <th className="col-player">Joueur</th>
               <th className="col-classes">Classes</th>
+              <th className="col-player">Joueur</th>
               <th className="col-points">Points</th>
             </tr>
           </thead>
@@ -181,9 +181,6 @@ function PlayerRow({ player, order }) {
   return (
     <tr className="player-row" style={{ '--i': order }}>
       <td className="cell-rank">#{player.rank}</td>
-      <td className="cell-player">
-        <div className="player-name">{player.name}</div>
-      </td>
       <td className="cell-classes">
         <div className="player-classes" aria-label="Classes jouees">
           {Array.isArray(player.classes) && player.classes.length > 0 ? (
@@ -199,6 +196,9 @@ function PlayerRow({ player, order }) {
             <span className="player-meta">Aucune classe</span>
           )}
         </div>
+      </td>
+      <td className="cell-player">
+        <div className="player-name">{player.name}</div>
       </td>
       <td className="cell-points">{player.points}</td>
     </tr>

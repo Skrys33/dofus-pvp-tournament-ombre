@@ -198,7 +198,6 @@ input::placeholder {
   letter-spacing: 0.12em;
   color: var(--muted);
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(10, 10, 16, 0.9);
   position: sticky;
   top: 0;
 }
@@ -212,7 +211,8 @@ input::placeholder {
 }
 
 .col-classes {
-  min-width: 180px;
+  width: 130px;
+  max-width: 130px;
 }
 
 .col-points {
@@ -265,7 +265,8 @@ input::placeholder {
 }
 
 .cell-classes {
-  min-width: 180px;
+  width: 100px;
+  max-width: 100px;
 }
 
 .cell-points {
