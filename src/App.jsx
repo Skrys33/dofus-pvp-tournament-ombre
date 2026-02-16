@@ -247,7 +247,7 @@ const resolveTeamScores = (score) => {
   return [Number.isNaN(parsedA) ? null : parsedA, Number.isNaN(parsedB) ? null : parsedB]
 }
 
-function MatchTeam({ name, isWinner, classes, score, hasIncomingLink }) {
+function MatchTeam({ name, isWinner, classes, score, hasIncomingLink, isHighlighted, onHover, onLeave }) {
   const rowClass = `match-team ${isWinner ? 'winner' : ''}`.trim()
 
   return (
@@ -255,7 +255,12 @@ function MatchTeam({ name, isWinner, classes, score, hasIncomingLink }) {
       className={rowClass}
       data-outcome={isWinner ? 'win' : 'lose'}
       data-incoming={hasIncomingLink ? 'true' : 'false'}
+      data-highlighted={isHighlighted ? 'true' : 'false'}
+      onMouseEnter={onHover}
+      onMouseLeave={onLeave}
     >
+      <div className='match-team-marker'/>
+
       <div className="match-team-classes" aria-label={`Classes de ${name}`}>
         {Array.isArray(classes) && classes.length > 0 ? (
           classes.map((className, index) => {
@@ -277,16 +282,22 @@ function MatchTeam({ name, isWinner, classes, score, hasIncomingLink }) {
   )
 }
 
-function MatchCard({ match, playersByName, roundIndex, hasNextRound }) {
+function MatchCard({ match, playersByName, roundIndex, hasNextRound, hoveredTeam, onHoverTeam, onLeaveTeam }) {
   const teamA = match.teamA ?? 'TBD'
   const teamB = match.teamB ?? 'TBD'
   const [teamAScore, teamBScore] = resolveTeamScores(match.score)
+  const topHighlighted = hoveredTeam !== null && hoveredTeam === teamA
+  const bottomHighlighted = hoveredTeam !== null && hoveredTeam === teamB
+  const outgoingHighlighted = hoveredTeam !== null && hoveredTeam === match.winner
 
   return (
     <article
       className="match-card"
       data-round-index={roundIndex}
       data-has-outgoing={hasNextRound && Boolean(match.winner) ? 'true' : 'false'}
+      data-highlight-top={topHighlighted ? 'true' : 'false'}
+      data-highlight-bottom={bottomHighlighted ? 'true' : 'false'}
+      data-highlight-outgoing={outgoingHighlighted ? 'true' : 'false'}
     >
       <MatchTeam
         name={teamA}
@@ -294,6 +305,9 @@ function MatchCard({ match, playersByName, roundIndex, hasNextRound }) {
         classes={playersByName.get(teamA)}
         score={teamAScore}
         hasIncomingLink={roundIndex > 0}
+        isHighlighted={topHighlighted}
+        onHover={() => onHoverTeam(teamA)}
+        onLeave={onLeaveTeam}
       />
       <MatchTeam
         name={teamB}
@@ -301,6 +315,9 @@ function MatchCard({ match, playersByName, roundIndex, hasNextRound }) {
         classes={playersByName.get(teamB)}
         score={teamBScore}
         hasIncomingLink={roundIndex > 0}
+        isHighlighted={bottomHighlighted}
+        onHover={() => onHoverTeam(teamB)}
+        onLeave={onLeaveTeam}
       />
     </article>
   )
@@ -310,6 +327,7 @@ function BracketPage() {
   const rounds = resolveOrderedRounds(playersData?.tournament?.bracket).map(([key, matches]) => ({ key, matches }))
   const playersByName = useMemo(() => resolvePlayersByName(playersData?.players), [])
   const champion = playersData?.tournament?.champion
+  const [hoveredTeam, setHoveredTeam] = useState(null)
 
   return (
     <section className="page bracket-page">
@@ -344,6 +362,9 @@ function BracketPage() {
                       playersByName={playersByName}
                       roundIndex={roundIndex}
                       hasNextRound={hasNextRound}
+                      hoveredTeam={hoveredTeam}
+                      onHoverTeam={setHoveredTeam}
+                      onLeaveTeam={() => setHoveredTeam(null)}
                     />
                   ))}
                 </div>

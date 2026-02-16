@@ -399,7 +399,6 @@ input::placeholder {
   position: relative;
   background: #1c1c1c;
   border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 4px;
   overflow: visible;
 }
 
@@ -433,34 +432,61 @@ input::placeholder {
   border-right: 1px solid rgba(255, 255, 255, 0.38);
 }
 
+.match-card[data-highlight-outgoing='true']::after {
+  border-top-color: #fff;
+}
+
+.round-matches > .match-card:nth-child(even)[data-highlight-outgoing='true']::before,
+.round-matches > .match-card:nth-child(odd)[data-highlight-outgoing='true']::before {
+  border-right-color: #fff;
+}
+
 .match-team {
   position: relative;
   display: flex;
   align-items: center;
   gap: 8px;
   min-height: 40px;
-  padding: 0 12px;
-  border-left: 3px solid transparent;
+  padding: 0 12px 0 0;
+  box-shadow: inset 0 0 0 1px transparent;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.match-team[data-outcome='win'] .match-team-marker {
+  background-color: #c79e57;
+}
+
+.match-team-marker {
+  width: 3px;
+  height: 40px;
+  background-color: #050505;
 }
 
 .match-team + .match-team {
   border-top: 0;
-  border-left-color: #050505;
 }
 
 .match-team[data-outcome='win'] {
-  border-left-color: #c79e57;
   background: rgba(199, 158, 87, 0.12);
 }
 
 .match-team[data-incoming='true']::before {
   content: '';
   position: absolute;
-  left: -26px;
+  left: -22px;
   top: 50%;
   width: 22px;
   transform: translateY(-50%);
   border-top: 1px solid rgba(255, 255, 255, 0.38);
+}
+
+.match-team[data-highlighted='true'] {
+  outline: 1px solid #fff;
+  outline-offset: -1px;
+}
+
+.match-team[data-highlighted='true'][data-incoming='true']::before {
+  border-top-color: #fff;
 }
 
 .match-win-arrow {
@@ -572,31 +598,5 @@ input::placeholder {
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-@media (max-width: 900px) {
-  .app {
-    padding: 32px 6vw 56px;
-  }
-
-  .nav {
-    width: 100%;
-    justify-content: space-between;
-  }
-
-  .round-column {
-    flex-basis: 220px;
-    min-width: 220px;
-  }
-
-  .bracket-grid {
-    gap: 34px;
-  }
-}
-
-@media (max-width: 600px) {
-  .boss-row {
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   }
 }
