@@ -1,4 +1,4 @@
-﻿import { useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { NavLink, Route, Routes } from 'react-router-dom'
 import playersData from './data/players.json'
 import backgroundVideo from './assets/background.mp4'
@@ -70,6 +70,8 @@ const resolvePlayerPoints = (players, tournament) => {
 }
 
 function App() {
+  const participantCount = Array.isArray(playersData.players) ? playersData.players.length : 0
+
   return (
     <div className="app">
       <div className="video-bg" aria-hidden="true">
@@ -80,10 +82,10 @@ function App() {
       </div>
       <header className="hero">
         <div>
-          <p className="eyebrow">Dofus - Tournoi Ombre - PvP</p>
+          <p className="eyebrow">Dofus - Tournoi Ombre - PvP 2v2</p>
           <h1>Classement des joueurs</h1>
           <p className="subtitle">
-            Classement base sur le tournoi. <br />1 point pour une victoire, 0 pour une defaite.
+            Edition III - {participantCount} participants. <br />1 point pour une victoire, 0 pour une defaite.
           </p>
         </div>
         <nav className="nav">
@@ -221,91 +223,61 @@ const resolveOrderedRounds = (bracket) => {
     .sort((a, b) => b[1].length - a[1].length)
 }
 
-const resolveBracketRoots = (bracket) => {
-  const orderedRounds = resolveOrderedRounds(bracket).map(([key, matches]) => ({ key, matches }))
-  if (orderedRounds.length === 0) return []
-
-  const buildNode = (roundIndex, matchIndex) => {
-    const round = orderedRounds[roundIndex]
-    const match = round?.matches?.[matchIndex]
-    if (!match) return null
-
-    const node = {
-      id: `${round.key}-${matchIndex}`,
-      label: match.winner ?? 'TBD',
-      subtitle: `${formatRoundLabel(round.key)}${match.score ? ` - ${match.score}` : ''}`,
-      isWinner: true,
-      isLeaf: false,
-      children: []
-    }
-
-    if (roundIndex === 0) {
-      node.children = [
-        {
-          id: `${node.id}-a`,
-          label: match.teamA ?? 'TBD',
-          isWinner: match.winner === match.teamA,
-          isLeaf: true
-        },
-        {
-          id: `${node.id}-b`,
-          label: match.teamB ?? 'TBD',
-          isWinner: match.winner === match.teamB,
-          isLeaf: true
-        }
-      ]
-      return node
-    }
-
-    const left = buildNode(roundIndex - 1, matchIndex * 2)
-    const right = buildNode(roundIndex - 1, matchIndex * 2 + 1)
-
-    node.children = [
-      left ?? {
-        id: `${node.id}-fallback-a`,
-        label: match.teamA ?? 'TBD',
-        isWinner: match.winner === match.teamA,
-        isLeaf: true
-      },
-      right ?? {
-        id: `${node.id}-fallback-b`,
-        label: match.teamB ?? 'TBD',
-        isWinner: match.winner === match.teamB,
-        isLeaf: true
-      }
-    ]
-
-    return node
-  }
-
-  const finalRoundIndex = orderedRounds.length - 1
-  const finalMatches = orderedRounds[finalRoundIndex].matches
-  return finalMatches.map((_, index) => buildNode(finalRoundIndex, index)).filter(Boolean)
+const resolvePlayersByName = (players) => {
+  return new Map(
+    (players ?? []).map((player) => [player.name, Array.isArray(player.classes) ? player.classes : []])
+  )
 }
 
-function BracketNode({ node }) {
-  const isBye = typeof node.label === 'string' && node.label.startsWith('BYE_')
-  const cardClass = `tree-card ${node.isWinner ? 'winner' : ''} ${isBye ? 'bye' : ''}`.trim()
+const resolveTeamScores = (score) => {
+  if (typeof score !== 'string') return [null, null]
+  const [teamAScore, teamBScore] = score.split('-').map((part) => part?.trim())
+  const parsedA = Number.parseInt(teamAScore, 10)
+  const parsedB = Number.parseInt(teamBScore, 10)
+  return [Number.isNaN(parsedA) ? null : parsedA, Number.isNaN(parsedB) ? null : parsedB]
+}
+
+function MatchTeam({ name, isWinner, classes, score }) {
+  const rowClass = `match-team ${isWinner ? 'winner' : ''}`.trim()
 
   return (
-    <li>
-      <div className={cardClass}>
-        <span className="tree-label">{node.label}</span>
-        {node.subtitle ? <span className="tree-meta">{node.subtitle}</span> : null}
+    <div className={rowClass} data-outcome={isWinner ? 'win' : 'lose'}>
+      <div className="match-team-classes" aria-label={`Classes de ${name}`}>
+        {Array.isArray(classes) && classes.length > 0 ? (
+          classes.map((className, index) => {
+            const iconSrc = resolveClassIcon(className)
+            return (
+              <span key={`${name}-bracket-class-${index}`} className="match-class-badge">
+                {iconSrc ? <img src={iconSrc} alt={className} title={className} /> : <span>{className}</span>}
+              </span>
+            )
+          })
+        ) : (
+          <span className="match-team-meta">Aucune classe</span>
+        )}
       </div>
-      {Array.isArray(node.children) && node.children.length > 0 ? (
-        <ul>
-          {node.children.map((child) => (
-            <BracketNode key={child.id} node={child} />
-          ))}
-        </ul>
-      ) : null}
-    </li>
+      <span className="match-team-name">{name}</span>
+      {score !== null ? <span className="match-team-score">{score}</span> : null}
+    </div>
+  )
+}
+
+function MatchCard({ match, playersByName }) {
+  const teamA = match.teamA ?? 'TBD'
+  const teamB = match.teamB ?? 'TBD'
+  const [teamAScore, teamBScore] = resolveTeamScores(match.score)
+
+  return (
+    <article className="match-card">
+      <MatchTeam name={teamA} isWinner={match.winner === teamA} classes={playersByName.get(teamA)} score={teamAScore} />
+      <MatchTeam name={teamB} isWinner={match.winner === teamB} classes={playersByName.get(teamB)} score={teamBScore} />
+    </article>
   )
 }
 
 function BracketPage() {
-  const roots = resolveBracketRoots(playersData?.tournament?.bracket)
+  const rounds = resolveOrderedRounds(playersData?.tournament?.bracket).map(([key, matches]) => ({ key, matches }))
+  const playersByName = useMemo(() => resolvePlayersByName(playersData?.players), [])
   const champion = playersData?.tournament?.champion
 
   return (
@@ -317,17 +289,24 @@ function BracketPage() {
         </div>
       </div>
 
-      {roots.length === 0 ? (
+      {rounds.length === 0 ? (
         <div className="rules-card">
           <p>Aucun bracket disponible dans les donnees.</p>
         </div>
       ) : (
         <div className="tree-wrap" role="region" aria-label="Arbre de rencontres">
-          <ul className="match-tree">
-            {roots.map((root) => (
-              <BracketNode key={root.id} node={root} />
+          <div className="bracket-grid">
+            {rounds.map((round) => (
+              <section key={round.key} className="round-column">
+                <h3 className="round-title">{formatRoundLabel(round.key)}</h3>
+                <div className="round-matches">
+                  {round.matches.map((match) => (
+                    <MatchCard key={match.id} match={match} playersByName={playersByName} />
+                  ))}
+                </div>
+              </section>
             ))}
-          </ul>
+          </div>
         </div>
       )}
     </section>
