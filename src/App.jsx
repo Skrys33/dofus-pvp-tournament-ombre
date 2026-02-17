@@ -413,6 +413,20 @@ function BracketTree({
     return previousRoundWinners.has(teamName)
   }
 
+  const losersFirstAppearanceByTeam = (() => {
+    if (bracketType !== 'losers') return new Map()
+    const firstAppearance = new Map()
+    rounds.forEach((round, roundIndex) => {
+      ;(round?.matches ?? []).forEach((match) => {
+        const teamA = match?.teamA
+        const teamB = match?.teamB
+        if (teamA && !firstAppearance.has(teamA)) firstAppearance.set(teamA, roundIndex)
+        if (teamB && !firstAppearance.has(teamB)) firstAppearance.set(teamB, roundIndex)
+      })
+    })
+    return firstAppearance
+  })()
+
   return (
     <section
       className="bracket-section"
@@ -491,14 +505,22 @@ function BracketTree({
                         match.teamB,
                         match.incomingBottomFromPrevious
                       ) || bottomCrossBracketIncomingFromGrandFinal || bottomIncomingFromOutsideLosersRound
+                      const isTopFirstLosersAppearance =
+                        bracketType === 'losers' &&
+                        Boolean(match.teamA) &&
+                        losersFirstAppearanceByTeam.get(match.teamA) === roundIndex
+                      const isBottomFirstLosersAppearance =
+                        bracketType === 'losers' &&
+                        Boolean(match.teamB) &&
+                        losersFirstAppearanceByTeam.get(match.teamB) === roundIndex
 
                       return (
                     <MatchCard
                       key={match.id}
                       match={match}
                       playersByName={playersByName}
-                      hasIncomingTopLink={hasIncomingTopLink}
-                      hasIncomingBottomLink={hasIncomingBottomLink}
+                      hasIncomingTopLink={!isTopFirstLosersAppearance && hasIncomingTopLink}
+                      hasIncomingBottomLink={!isBottomFirstLosersAppearance && hasIncomingBottomLink}
                       hasCrossBracketIncomingTop={topCrossBracketIncomingFromGrandFinal}
                       hasCrossBracketIncomingBottom={bottomCrossBracketIncomingFromGrandFinal}
                       roundIndex={roundIndex}
