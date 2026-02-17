@@ -356,6 +356,47 @@ input::placeholder {
   gap: 16px;
 }
 
+.bracket-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.bracket-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bracket-section-title {
+  margin: 0;
+  font-size: 0.88rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.bracket-bridge {
+  position: relative;
+  align-self: center;
+  margin: 4px 0 2px;
+  width: 280px;
+  font-weight: 800;
+  margin: 1rem 0 0.5rem;
+}
+
+.bracket-bridge-label {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
 .tree-wrap {
   overflow-x: auto;
   overflow-y: hidden;
@@ -396,6 +437,10 @@ input::placeholder {
   padding-top: var(--round-offset, 0);
 }
 
+.round-column[data-round-key='grand_final'] .round-matches {
+  transform: translateY(-25%);
+}
+
 .match-card {
   position: relative;
   background: #1c1c1c;
@@ -431,6 +476,10 @@ input::placeholder {
   width: 0;
   height: calc((var(--round-gap, 14px) / 2) + 21px);
   border-right: 1px solid rgba(255, 255, 255, 0.38);
+}
+
+.round-column[data-round-key='final'] .round-matches > .match-card:nth-child(odd)[data-has-outgoing='true']::before {
+  height: calc(((var(--round-gap, 14px) * 0.5 / 2) - 10px));
 }
 
 .match-card[data-highlight-outgoing='true']::after {
@@ -488,6 +537,52 @@ input::placeholder {
 
 .match-team[data-highlighted='true'][data-incoming='true']::before {
   border-top-color: #fff;
+}
+
+.match-team[data-cross-incoming='true']::after {
+  content: '';
+  position: absolute;
+  left: -22px;
+  top: 50%;
+  height: 250px;
+  border-left: 1px solid rgba(255, 255, 255, 0.45);
+}
+
+.match-team[data-highlighted='true'][data-cross-incoming='true']::after {
+  border-left-color: #fff;
+}
+
+.match-team[data-promote='true']::after {
+  content: '';
+  position: absolute;
+  right: -22px;
+  top: 100%;
+  width: 22px;
+  transform: translateY(-50%);
+  border-top: 1px solid rgba(255, 255, 255, 0.45);
+}
+
+.match-card[data-highlight-outgoing='true'] .match-team[data-promote='true']::after {
+  border-top-color: #fff;
+}
+
+.round-column[data-promotion-up='true'] {
+  position: relative;
+}
+
+.round-column[data-promotion-up='true']::after {
+  content: '';
+  position: absolute;
+  right: -22px;
+  top: -22px;
+  bottom: 0;
+  border-right: 1px solid rgba(255, 255, 255, 0.45);
+  pointer-events: none;
+  height: calc(100% - 18px);
+}
+
+.round-column[data-promotion-up='true'][data-promotion-highlighted='true']::after {
+  border-right-color: #fff;
 }
 
 .match-win-arrow {

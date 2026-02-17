@@ -115,7 +115,7 @@
                     }
                 ],
     "tournament":  {
-                       "format":  "single_elimination",
+                       "format":  "double_elimination",
                        "generatedAt":  "2026-02-16",
                        "participants":  [
                                             "Mallefisk",
@@ -136,6 +136,16 @@
                                             "Coach diff"
                                         ],
                        "champion":  "Mallefisk",
+                       "losers_champion":  "Copilotte",
+                       "grand_final":  [
+                                           {
+                                               "id":  "grand_final-m1",
+                                               "teamA":  "Mallefisk",
+                                               "teamB":  "Copilotte",
+                                               "winner":  "Mallefisk",
+                                               "score":  "2-1"
+                                           }
+                                       ],
                        "bracket":  {
                                        "round_of_16":  [
                                                            {
@@ -250,6 +260,97 @@
                                                          "score":  "2-1"
                                                      }
                                                  ]
+                                   },
+                       "losers_bracket":  {
+                                              "losers_round_1":  [
+                                                                      {
+                                                                          "id":  "losers_round_1-m1",
+                                                                          "teamA":  "Shura",
+                                                                          "teamB":  "Ice-climbers",
+                                                                          "winner":  "Shura",
+                                                                          "score":  "2-1"
+                                                                      },
+                                                                      {
+                                                                          "id":  "losers_round_1-m2",
+                                                                          "teamA":  "Hof",
+                                                                          "teamB":  "Skrys",
+                                                                          "winner":  "Skrys",
+                                                                          "score":  "2-1"
+                                                                      },
+                                                                      {
+                                                                          "id":  "losers_round_1-m3",
+                                                                          "teamA":  "Clown",
+                                                                          "teamB":  "Ino",
+                                                                          "winner":  "Clown",
+                                                                          "score":  "2-1"
+                                                                      },
+                                                                      {
+                                                                          "id":  "losers_round_1-m4",
+                                                                          "teamA":  "Exel",
+                                                                          "teamB":  "Coach diff",
+                                                                          "winner":  "Exel",
+                                                                          "score":  "2-1"
+                                                                      }
+                                                                  ],
+                                              "losers_round_2":  [
+                                                                      {
+                                                                          "id":  "losers_round_2-m1",
+                                                                          "teamA":  "Shura",
+                                                                          "teamB":  "RigueurSacrificeDestin",
+                                                                          "incomingBottomFromPrevious":  true,
+                                                                          "winner":  "RigueurSacrificeDestin",
+                                                                          "score":  "2-1"
+                                                                      },
+                                                                      {
+                                                                          "id":  "losers_round_2-m2",
+                                                                          "teamA":  "Skrys",
+                                                                          "teamB":  "Copilotte",
+                                                                          "incomingBottomFromPrevious":  true,
+                                                                          "winner":  "Copilotte",
+                                                                          "score":  "2-1"
+                                                                      },
+                                                                      {
+                                                                          "id":  "losers_round_2-m3",
+                                                                          "teamA":  "Clown",
+                                                                          "teamB":  "AirMax TN",
+                                                                          "incomingTopFromPrevious":  false,
+                                                                          "winner":  "AirMax TN",
+                                                                          "score":  "2-1"
+                                                                      },
+                                                                      {
+                                                                          "id":  "losers_round_2-m4",
+                                                                          "teamA":  "Exel",
+                                                                          "teamB":  "Les p\u0027tits nouveaux",
+                                                                          "incomingTopFromPrevious":  false,
+                                                                          "winner":  "Les p\u0027tits nouveaux",
+                                                                          "score":  "2-1"
+                                                                      }
+                                                                  ],
+                                              "losers_semifinals":  [
+                                                                        {
+                                                                            "id":  "losers_semifinals-m1",
+                                                                            "teamA":  "RigueurSacrificeDestin",
+                                                                            "teamB":  "Copilotte",
+                                                                            "winner":  "Copilotte",
+                                                                            "score":  "2-1"
+                                                                        },
+                                                                        {
+                                                                            "id":  "losers_semifinals-m2",
+                                                                            "teamA":  "AirMax TN",
+                                                                            "teamB":  "Les p\u0027tits nouveaux",
+                                                                            "winner":  "AirMax TN",
+                                                                            "score":  "2-1"
+                                                                        }
+                                                                    ],
+                                              "losers_final":  [
+                                                                    {
+                                                                        "id":  "losers_final-m1",
+                                                                        "teamA":  "Copilotte",
+                                                                        "teamB":  "AirMax TN",
+                                                                        "winner":  "Copilotte",
+                                                                        "score":  "2-1"
+                                                                    }
+                                                                ]
                                    }
                    }
 }

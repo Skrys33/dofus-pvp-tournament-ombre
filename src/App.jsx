@@ -55,7 +55,8 @@ const resolveClassIcon = (name) => {
 const resolvePlayerPoints = (players, tournament) => {
   const playerNames = new Set(players.map((player) => player.name))
   const pointsByName = new Map(players.map((player) => [player.name, 0]))
-  const rounds = Object.values(tournament?.bracket ?? {})
+  const bracketCollections = [tournament?.bracket, tournament?.losers_bracket, tournament?.losersBracket]
+  const rounds = bracketCollections.flatMap((bracket) => Object.values(bracket ?? {}))
 
   for (const matches of rounds) {
     if (!Array.isArray(matches)) continue
@@ -212,7 +213,13 @@ const formatRoundLabel = (roundKey) => {
     round_of_16: 'Round of 16',
     quarterfinals: 'Quarterfinals',
     semifinals: 'Semifinals',
-    final: 'Final'
+    final: 'Final',
+    losers_round_1: 'Losers Round 1',
+    losers_round_2: 'Losers Round 2',
+    losers_semifinals: 'Losers Semifinals',
+    losers_final: 'Losers Final',
+    grand_final: 'Grand Final',
+    grand_final_reset: 'Grand Final Reset'
   }
   return labels[roundKey] ?? roundKey.replaceAll('_', ' ')
 }
@@ -247,7 +254,18 @@ const resolveTeamScores = (score) => {
   return [Number.isNaN(parsedA) ? null : parsedA, Number.isNaN(parsedB) ? null : parsedB]
 }
 
-function MatchTeam({ name, isWinner, classes, score, hasIncomingLink, isHighlighted, onHover, onLeave }) {
+function MatchTeam({
+  name,
+  isWinner,
+  classes,
+  score,
+  hasIncomingLink,
+  hasCrossBracketIncoming,
+  isHighlighted,
+  hasPromotionPath,
+  onHover,
+  onLeave
+}) {
   const rowClass = `match-team ${isWinner ? 'winner' : ''}`.trim()
 
   return (
@@ -255,7 +273,9 @@ function MatchTeam({ name, isWinner, classes, score, hasIncomingLink, isHighligh
       className={rowClass}
       data-outcome={isWinner ? 'win' : 'lose'}
       data-incoming={hasIncomingLink ? 'true' : 'false'}
+      data-cross-incoming={hasCrossBracketIncoming ? 'true' : 'false'}
       data-highlighted={isHighlighted ? 'true' : 'false'}
+      data-promote={hasPromotionPath ? 'true' : 'false'}
       onMouseEnter={onHover}
       onMouseLeave={onLeave}
     >
@@ -282,13 +302,28 @@ function MatchTeam({ name, isWinner, classes, score, hasIncomingLink, isHighligh
   )
 }
 
-function MatchCard({ match, playersByName, roundIndex, hasNextRound, hoveredTeam, onHoverTeam, onLeaveTeam }) {
+function MatchCard({
+  match,
+  playersByName,
+  hasIncomingTopLink,
+  hasIncomingBottomLink,
+  hasCrossBracketIncomingTop,
+  hasCrossBracketIncomingBottom,
+  roundIndex,
+  roundKey,
+  hasNextRound,
+  hoveredTeam,
+  onHoverTeam,
+  onLeaveTeam
+}) {
   const teamA = match.teamA ?? 'TBD'
   const teamB = match.teamB ?? 'TBD'
   const [teamAScore, teamBScore] = resolveTeamScores(match.score)
   const topHighlighted = hoveredTeam !== null && hoveredTeam === teamA
   const bottomHighlighted = hoveredTeam !== null && hoveredTeam === teamB
   const outgoingHighlighted = hoveredTeam !== null && hoveredTeam === match.winner
+  const hasPromotionPathOnTop = roundKey === 'losers_final' && match.winner === teamA
+  const hasPromotionPathOnBottom = roundKey === 'losers_final' && match.winner === teamB
 
   return (
     <article
@@ -304,8 +339,10 @@ function MatchCard({ match, playersByName, roundIndex, hasNextRound, hoveredTeam
         isWinner={match.winner === teamA}
         classes={playersByName.get(teamA)}
         score={teamAScore}
-        hasIncomingLink={roundIndex > 0}
+        hasIncomingLink={hasIncomingTopLink}
+        hasCrossBracketIncoming={hasCrossBracketIncomingTop}
         isHighlighted={topHighlighted}
+        hasPromotionPath={hasPromotionPathOnTop}
         onHover={() => onHoverTeam(teamA)}
         onLeave={onLeaveTeam}
       />
@@ -314,8 +351,10 @@ function MatchCard({ match, playersByName, roundIndex, hasNextRound, hoveredTeam
         isWinner={match.winner === teamB}
         classes={playersByName.get(teamB)}
         score={teamBScore}
-        hasIncomingLink={roundIndex > 0}
+        hasIncomingLink={hasIncomingBottomLink}
+        hasCrossBracketIncoming={hasCrossBracketIncomingBottom}
         isHighlighted={bottomHighlighted}
+        hasPromotionPath={hasPromotionPathOnBottom}
         onHover={() => onHoverTeam(teamB)}
         onLeave={onLeaveTeam}
       />
@@ -323,55 +362,162 @@ function MatchCard({ match, playersByName, roundIndex, hasNextRound, hoveredTeam
   )
 }
 
+function BracketTree({ title, rounds, playersByName, hoveredTeam, onHoverTeam, onLeaveTeam, showPromotionRail }) {
+  const resolveIncomingLink = (roundIndex, previousRoundWinners, teamName, incomingOverride) => {
+    if (typeof incomingOverride === 'boolean') return incomingOverride
+    if (roundIndex === 0 || !teamName) return false
+    return previousRoundWinners.has(teamName)
+  }
+
+  return (
+    <section className="bracket-section" data-promotion-up={showPromotionRail ? 'true' : 'false'}>
+      <h3 className="bracket-section-title">{title}</h3>
+      <div className="tree-wrap" role="region" aria-label={title}>
+        <div className="bracket-grid">
+          {rounds.map((round, roundIndex) => {
+            const layout = resolveRoundLayout(roundIndex)
+            const hasNextRound = roundIndex < rounds.length - 1
+            const isPromotionColumn = showPromotionRail && roundIndex === rounds.length - 1
+            const promotionWinner =
+              isPromotionColumn && round.key === 'losers_final' ? round.matches?.[0]?.winner ?? null : null
+            const isPromotionHighlighted = Boolean(promotionWinner && hoveredTeam === promotionWinner)
+            const previousRound = roundIndex > 0 ? rounds[roundIndex - 1] : null
+            const previousRoundWinners = new Set(
+              (previousRound?.matches ?? []).map((previousMatch) => previousMatch?.winner).filter(Boolean)
+            )
+            return (
+              <section
+                key={round.key}
+                className="round-column"
+                data-round-key={round.key}
+                data-promotion-up={isPromotionColumn ? 'true' : 'false'}
+                data-promotion-highlighted={isPromotionHighlighted ? 'true' : 'false'}
+              >
+                <h4 className="round-title">{formatRoundLabel(round.key)}</h4>
+                <div
+                  className="round-matches"
+                  style={{ '--round-gap': `${layout.gap}px`, '--round-offset': `${layout.offset}px` }}
+                >
+                  {round.matches.map((match) => (
+                    (() => {
+                      const isGrandFinalRound = round.key === 'grand_final'
+                      const topCrossBracketIncoming =
+                        isGrandFinalRound && roundIndex > 0 && Boolean(match.teamA) && !previousRoundWinners.has(match.teamA)
+                      const bottomCrossBracketIncoming =
+                        isGrandFinalRound && roundIndex > 0 && Boolean(match.teamB) && !previousRoundWinners.has(match.teamB)
+                      const hasIncomingTopLink = resolveIncomingLink(
+                        roundIndex,
+                        previousRoundWinners,
+                        match.teamA,
+                        match.incomingTopFromPrevious
+                      ) || topCrossBracketIncoming
+                      const hasIncomingBottomLink = resolveIncomingLink(
+                        roundIndex,
+                        previousRoundWinners,
+                        match.teamB,
+                        match.incomingBottomFromPrevious
+                      ) || bottomCrossBracketIncoming
+
+                      return (
+                    <MatchCard
+                      key={match.id}
+                      match={match}
+                      playersByName={playersByName}
+                      hasIncomingTopLink={hasIncomingTopLink}
+                      hasIncomingBottomLink={hasIncomingBottomLink}
+                      hasCrossBracketIncomingTop={topCrossBracketIncoming}
+                      hasCrossBracketIncomingBottom={bottomCrossBracketIncoming}
+                      roundIndex={roundIndex}
+                      roundKey={round.key}
+                      hasNextRound={hasNextRound}
+                      hoveredTeam={hoveredTeam}
+                      onHoverTeam={onHoverTeam}
+                      onLeaveTeam={onLeaveTeam}
+                    />
+                      )
+                    })()
+                  ))}
+                </div>
+              </section>
+            )
+          })}
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function BracketPage() {
-  const rounds = resolveOrderedRounds(playersData?.tournament?.bracket).map(([key, matches]) => ({ key, matches }))
+  const tournament = playersData?.tournament ?? {}
+  const winnersRoundsBase = resolveOrderedRounds(playersData?.tournament?.bracket).map(([key, matches]) => ({ key, matches }))
+  const losersRounds = resolveOrderedRounds(
+    playersData?.tournament?.losers_bracket ?? playersData?.tournament?.losersBracket
+  ).map(([key, matches]) => ({ key, matches }))
   const playersByName = useMemo(() => resolvePlayersByName(playersData?.players), [])
-  const champion = playersData?.tournament?.champion
+  const champion = tournament?.champion
+  const losersChampion = tournament?.losers_champion ?? tournament?.losersChampion
+  const grandFinalMatches = Array.isArray(tournament?.grand_final)
+    ? tournament.grand_final
+    : champion && losersChampion
+      ? [
+          {
+            id: 'grand-final-m1',
+            teamA: champion,
+            teamB: losersChampion,
+            winner: champion
+          }
+        ]
+      : []
+  const grandFinalRounds = grandFinalMatches.length > 0 ? [{ key: 'grand_final', matches: grandFinalMatches }] : []
+  const winnersRounds = [...winnersRoundsBase, ...grandFinalRounds]
   const [hoveredTeam, setHoveredTeam] = useState(null)
+  const hasAnyBracket = winnersRounds.length > 0 || losersRounds.length > 0
 
   return (
     <section className="page bracket-page">
       <div className="section-header">
         <div>
           <h2>Bracket du tournoi</h2>
-          {champion ? <p className="last-updated">Champion fictif: {champion}</p> : null}
+          {champion ? <p className="last-updated">Champion du winner bracket: {champion}</p> : null}
+          {losersChampion ? <p className="last-updated">Champion du loser bracket: {losersChampion}</p> : null}
         </div>
       </div>
 
-      {rounds.length === 0 ? (
+      {!hasAnyBracket ? (
         <div className="rules-card">
           <p>Aucun bracket disponible dans les donnees.</p>
         </div>
       ) : (
-        <div className="tree-wrap" role="region" aria-label="Arbre de rencontres">
-          <div className="bracket-grid">
-            {rounds.map((round, roundIndex) => {
-              const layout = resolveRoundLayout(roundIndex)
-              const hasNextRound = roundIndex < rounds.length - 1
-              return (
-              <section key={round.key} className="round-column">
-                <h3 className="round-title">{formatRoundLabel(round.key)}</h3>
-                <div
-                  className="round-matches"
-                  style={{ '--round-gap': `${layout.gap}px`, '--round-offset': `${layout.offset}px` }}
-                >
-                  {round.matches.map((match) => (
-                    <MatchCard
-                      key={match.id}
-                      match={match}
-                      playersByName={playersByName}
-                      roundIndex={roundIndex}
-                      hasNextRound={hasNextRound}
-                      hoveredTeam={hoveredTeam}
-                      onHoverTeam={setHoveredTeam}
-                      onLeaveTeam={() => setHoveredTeam(null)}
-                    />
-                  ))}
+        <div className="bracket-stack">
+          {winnersRounds.length > 0 ? (
+            <BracketTree
+              title="Winner Bracket"
+              rounds={winnersRounds}
+              playersByName={playersByName}
+              hoveredTeam={hoveredTeam}
+              onHoverTeam={setHoveredTeam}
+              onLeaveTeam={() => setHoveredTeam(null)}
+              showPromotionRail={false}
+            />
+          ) : null}
+          {losersRounds.length > 0 ? (
+            <>
+              {grandFinalRounds.length > 0 ? (
+                <div className="bracket-bridge" aria-hidden="true">
+                  <span className="bracket-bridge-label">Loser bracket winner remonte en grand final</span>
                 </div>
-              </section>
-              )
-            })}
-          </div>
+              ) : null}
+            <BracketTree
+              title="Loser Bracket"
+              rounds={losersRounds}
+              playersByName={playersByName}
+              hoveredTeam={hoveredTeam}
+              onHoverTeam={setHoveredTeam}
+              onLeaveTeam={() => setHoveredTeam(null)}
+              showPromotionRail={grandFinalRounds.length > 0}
+            />
+            </>
+          ) : null}
         </div>
       )}
     </section>
