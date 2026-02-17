@@ -408,16 +408,18 @@ input::placeholder {
 }
 
 .bracket-grid {
+  --round-column-width: 250px;
+  --round-column-gap: 42px;
   display: flex;
   align-items: flex-start;
-  gap: 42px;
+  gap: var(--round-column-gap);
   min-width: max-content;
   padding-right: 24px;
 }
 
 .round-column {
-  flex: 0 0 250px;
-  min-width: 250px;
+  flex: 0 0 var(--round-column-width);
+  min-width: var(--round-column-width);
 }
 
 .round-title {
@@ -480,6 +482,20 @@ input::placeholder {
 
 .round-column[data-round-key='final'] .round-matches > .match-card:nth-child(odd)[data-has-outgoing='true']::before {
   height: calc(((var(--round-gap, 14px) * 0.5 / 2) - 10px));
+}
+
+.bracket-section[data-bracket-type='losers']
+  .round-column[data-round-key='losers_round_1']
+  .round-matches > .match-card:nth-child(odd)[data-has-outgoing='true']::before {
+  top: 25%;
+  height: 20px;
+}
+
+.bracket-section[data-bracket-type='losers']
+  .round-column[data-round-key='losers_round_1']
+  .round-matches > .match-card:nth-child(even)[data-has-outgoing='true']::before {
+  top: 25%;
+  height: 20px;
 }
 
 .match-card[data-highlight-outgoing='true']::after {
@@ -550,6 +566,10 @@ input::placeholder {
 
 .match-team[data-highlighted='true'][data-cross-incoming='true']::after {
   border-left-color: #fff;
+}
+
+.bracket-section[data-bracket-type='losers'] .match-team[data-cross-incoming='true']::after {
+  content: none;
 }
 
 .match-team[data-promote='true']::after {

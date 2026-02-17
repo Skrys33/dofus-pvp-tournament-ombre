@@ -1,356 +1,375 @@
-﻿{
-    "lastUpdated":  "2026-02-01 23:59",
-    "players":  [
-                    {
-                        "name":  "Mallefisk",
-                        "classes":  [
-                                        "Sram",
-                                        "Steamer"
-                                    ]
-                    },
-                    {
-                        "name":  "Shura",
-                        "classes":  [
-                                        "Pandawa",
-                                        "Elio"
-                                    ]
-                    },
-                    {
-                        "name":  "RigueurSacrificeDestin",
-                        "classes":  [
-                                        "Steamer",
-                                        "Zobal"
-                                    ]
-                    },
-                    {
-                        "name":  "Ice-climbers",
-                        "classes":  [
-                                        "Elio",
-                                        "Cra"
-                                    ]
-                    },
-                    {
-                        "name":  "Vina y Boomie",
-                        "classes":  [
-                                        "Eniripsa",
-                                        "Enutrof"
-                                    ]
-                    },
-                    {
-                        "name":  "Hof",
-                        "classes":  [
-                                        "Sadida",
-                                        "Roublard"
-                                    ]
-                    },
-                    {
-                        "name":  "Copilotte",
-                        "classes":  [
-                                        "Zobal",
-                                        "Osa"
-                                    ]
-                    },
-                    {
-                        "name":  "Skrys",
-                        "classes":  [
-                                        "Hupper",
-                                        "Pandawa"
-                                    ]
-                    },
-                    {
-                        "name":  "Lyra \u0026 ctln",
-                        "classes":  [
-                                        "Enu",
-                                        "Sram"
-                                    ]
-                    },
-                    {
-                        "name":  "Clown",
-                        "classes":  [
-                                        "Sram",
-                                        "Elio"
-                                    ]
-                    },
-                    {
-                        "name":  "AirMax TN",
-                        "classes":  [
-                                        "Roublard",
-                                        "Sadida"
-                                    ]
-                    },
-                    {
-                        "name":  "Ino",
-                        "classes":  [
-                                        "Sadida",
-                                        "Enutrof"
-                                    ]
-                    },
-                    {
-                        "name":  "jeSaisPas",
-                        "classes":  [
-                                        "Ouginak",
-                                        "Steamer"
-                                    ]
-                    },
-                    {
-                        "name":  "Exel",
-                        "classes":  [
-                                        "Cra",
-                                        "Enutrof"
-                                    ]
-                    },
-                    {
-                        "name":  "Les p\u0027tits nouveaux",
-                        "classes":  [
-                                        "Enutrof",
-                                        "Sadida"
-                                    ]
-                    },
-                    {
-                        "name":  "Coach diff",
-                        "classes":  [
-                                        "Sadida",
-                                        "Enutrof"
-                                    ]
-                    }
-                ],
-    "tournament":  {
-                       "format":  "double_elimination",
-                       "generatedAt":  "2026-02-16",
-                       "participants":  [
-                                            "Mallefisk",
-                                            "Shura",
-                                            "RigueurSacrificeDestin",
-                                            "Ice-climbers",
-                                            "Vina y Boomie",
-                                            "Hof",
-                                            "Copilotte",
-                                            "Skrys",
-                                            "Lyra \u0026 ctln",
-                                            "Clown",
-                                            "AirMax TN",
-                                            "Ino",
-                                            "jeSaisPas",
-                                            "Exel",
-                                            "Les p\u0027tits nouveaux",
-                                            "Coach diff"
-                                        ],
-                       "champion":  "Mallefisk",
-                       "losers_champion":  "Copilotte",
-                       "grand_final":  [
-                                           {
-                                               "id":  "grand_final-m1",
-                                               "teamA":  "Mallefisk",
-                                               "teamB":  "Copilotte",
-                                               "winner":  "Mallefisk",
-                                               "score":  "2-1"
-                                           }
-                                       ],
-                       "bracket":  {
-                                       "round_of_16":  [
-                                                           {
-                                                               "id":  "round_of_16-m1",
-                                                               "teamA":  "Mallefisk",
-                                                               "teamB":  "Shura",
-                                                               "winner":  "Mallefisk",
-                                                               "score":  "2-1"
-                                                           },
-                                                           {
-                                                               "id":  "round_of_16-m2",
-                                                               "teamA":  "RigueurSacrificeDestin",
-                                                               "teamB":  "Ice-climbers",
-                                                               "winner":  "RigueurSacrificeDestin",
-                                                               "score":  "2-1"
-                                                           },
-                                                           {
-                                                               "id":  "round_of_16-m3",
-                                                               "teamA":  "Vina y Boomie",
-                                                               "teamB":  "Hof",
-                                                               "winner":  "Vina y Boomie",
-                                                               "score":  "2-1"
-                                                           },
-                                                           {
-                                                               "id":  "round_of_16-m4",
-                                                               "teamA":  "Copilotte",
-                                                               "teamB":  "Skrys",
-                                                               "winner":  "Copilotte",
-                                                               "score":  "2-1"
-                                                           },
-                                                           {
-                                                               "id":  "round_of_16-m5",
-                                                               "teamA":  "Lyra \u0026 ctln",
-                                                               "teamB":  "Clown",
-                                                               "winner":  "Lyra \u0026 ctln",
-                                                               "score":  "2-1"
-                                                           },
-                                                           {
-                                                               "id":  "round_of_16-m6",
-                                                               "teamA":  "AirMax TN",
-                                                               "teamB":  "Ino",
-                                                               "winner":  "AirMax TN",
-                                                               "score":  "2-1"
-                                                           },
-                                                           {
-                                                               "id":  "round_of_16-m7",
-                                                               "teamA":  "jeSaisPas",
-                                                               "teamB":  "Exel",
-                                                               "winner":  "jeSaisPas",
-                                                               "score":  "2-1"
-                                                           },
-                                                           {
-                                                               "id":  "round_of_16-m8",
-                                                               "teamA":  "Les p\u0027tits nouveaux",
-                                                               "teamB":  "Coach diff",
-                                                               "winner":  "Les p\u0027tits nouveaux",
-                                                               "score":  "2-1"
-                                                           }
-                                                       ],
-                                       "quarterfinals":  [
-                                                             {
-                                                                 "id":  "quarterfinals-m1",
-                                                                 "teamA":  "Mallefisk",
-                                                                 "teamB":  "RigueurSacrificeDestin",
-                                                                 "winner":  "Mallefisk",
-                                                                 "score":  "2-1"
-                                                             },
-                                                             {
-                                                                 "id":  "quarterfinals-m2",
-                                                                 "teamA":  "Vina y Boomie",
-                                                                 "teamB":  "Copilotte",
-                                                                 "winner":  "Vina y Boomie",
-                                                                 "score":  "2-1"
-                                                             },
-                                                             {
-                                                                 "id":  "quarterfinals-m3",
-                                                                 "teamA":  "Lyra \u0026 ctln",
-                                                                 "teamB":  "AirMax TN",
-                                                                 "winner":  "Lyra \u0026 ctln",
-                                                                 "score":  "2-1"
-                                                             },
-                                                             {
-                                                                 "id":  "quarterfinals-m4",
-                                                                 "teamA":  "jeSaisPas",
-                                                                 "teamB":  "Les p\u0027tits nouveaux",
-                                                                 "winner":  "jeSaisPas",
-                                                                 "score":  "2-1"
-                                                             }
-                                                         ],
-                                       "semifinals":  [
-                                                          {
-                                                              "id":  "semifinals-m1",
-                                                              "teamA":  "Mallefisk",
-                                                              "teamB":  "Vina y Boomie",
-                                                              "winner":  "Mallefisk",
-                                                              "score":  "2-1"
-                                                          },
-                                                          {
-                                                              "id":  "semifinals-m2",
-                                                              "teamA":  "Lyra \u0026 ctln",
-                                                              "teamB":  "jeSaisPas",
-                                                              "winner":  "Lyra \u0026 ctln",
-                                                              "score":  "2-1"
-                                                          }
-                                                      ],
-                                       "final":  [
-                                                     {
-                                                         "id":  "final-m1",
-                                                         "teamA":  "Mallefisk",
-                                                         "teamB":  "Lyra \u0026 ctln",
-                                                         "winner":  "Mallefisk",
-                                                         "score":  "2-1"
-                                                     }
-                                                 ]
-                                   },
-                       "losers_bracket":  {
-                                              "losers_round_1":  [
-                                                                      {
-                                                                          "id":  "losers_round_1-m1",
-                                                                          "teamA":  "Shura",
-                                                                          "teamB":  "Ice-climbers",
-                                                                          "winner":  "Shura",
-                                                                          "score":  "2-1"
-                                                                      },
-                                                                      {
-                                                                          "id":  "losers_round_1-m2",
-                                                                          "teamA":  "Hof",
-                                                                          "teamB":  "Skrys",
-                                                                          "winner":  "Skrys",
-                                                                          "score":  "2-1"
-                                                                      },
-                                                                      {
-                                                                          "id":  "losers_round_1-m3",
-                                                                          "teamA":  "Clown",
-                                                                          "teamB":  "Ino",
-                                                                          "winner":  "Clown",
-                                                                          "score":  "2-1"
-                                                                      },
-                                                                      {
-                                                                          "id":  "losers_round_1-m4",
-                                                                          "teamA":  "Exel",
-                                                                          "teamB":  "Coach diff",
-                                                                          "winner":  "Exel",
-                                                                          "score":  "2-1"
-                                                                      }
-                                                                  ],
-                                              "losers_round_2":  [
-                                                                      {
-                                                                          "id":  "losers_round_2-m1",
-                                                                          "teamA":  "Shura",
-                                                                          "teamB":  "RigueurSacrificeDestin",
-                                                                          "incomingBottomFromPrevious":  true,
-                                                                          "winner":  "RigueurSacrificeDestin",
-                                                                          "score":  "2-1"
-                                                                      },
-                                                                      {
-                                                                          "id":  "losers_round_2-m2",
-                                                                          "teamA":  "Skrys",
-                                                                          "teamB":  "Copilotte",
-                                                                          "incomingBottomFromPrevious":  true,
-                                                                          "winner":  "Copilotte",
-                                                                          "score":  "2-1"
-                                                                      },
-                                                                      {
-                                                                          "id":  "losers_round_2-m3",
-                                                                          "teamA":  "Clown",
-                                                                          "teamB":  "AirMax TN",
-                                                                          "incomingTopFromPrevious":  false,
-                                                                          "winner":  "AirMax TN",
-                                                                          "score":  "2-1"
-                                                                      },
-                                                                      {
-                                                                          "id":  "losers_round_2-m4",
-                                                                          "teamA":  "Exel",
-                                                                          "teamB":  "Les p\u0027tits nouveaux",
-                                                                          "incomingTopFromPrevious":  false,
-                                                                          "winner":  "Les p\u0027tits nouveaux",
-                                                                          "score":  "2-1"
-                                                                      }
-                                                                  ],
-                                              "losers_semifinals":  [
-                                                                        {
-                                                                            "id":  "losers_semifinals-m1",
-                                                                            "teamA":  "RigueurSacrificeDestin",
-                                                                            "teamB":  "Copilotte",
-                                                                            "winner":  "Copilotte",
-                                                                            "score":  "2-1"
-                                                                        },
-                                                                        {
-                                                                            "id":  "losers_semifinals-m2",
-                                                                            "teamA":  "AirMax TN",
-                                                                            "teamB":  "Les p\u0027tits nouveaux",
-                                                                            "winner":  "AirMax TN",
-                                                                            "score":  "2-1"
-                                                                        }
-                                                                    ],
-                                              "losers_final":  [
-                                                                    {
-                                                                        "id":  "losers_final-m1",
-                                                                        "teamA":  "Copilotte",
-                                                                        "teamB":  "AirMax TN",
-                                                                        "winner":  "Copilotte",
-                                                                        "score":  "2-1"
-                                                                    }
-                                                                ]
-                                   }
-                   }
+{
+    "lastUpdated": "2026-02-01 23:59",
+    "players": [
+        {
+            "name": "Mallefisk",
+            "classes": [
+                "Sram",
+                "Steamer"
+            ]
+        },
+        {
+            "name": "Shura",
+            "classes": [
+                "Pandawa",
+                "Elio"
+            ]
+        },
+        {
+            "name": "RigueurSacrificeDestin",
+            "classes": [
+                "Steamer",
+                "Zobal"
+            ]
+        },
+        {
+            "name": "Ice-climbers",
+            "classes": [
+                "Elio",
+                "Cra"
+            ]
+        },
+        {
+            "name": "Vina y Boomie",
+            "classes": [
+                "Eniripsa",
+                "Enutrof"
+            ]
+        },
+        {
+            "name": "Hof",
+            "classes": [
+                "Sadida",
+                "Roublard"
+            ]
+        },
+        {
+            "name": "Copilotte",
+            "classes": [
+                "Zobal",
+                "Osa"
+            ]
+        },
+        {
+            "name": "Skrys",
+            "classes": [
+                "Hupper",
+                "Pandawa"
+            ]
+        },
+        {
+            "name": "Lyra & ctln",
+            "classes": [
+                "Enu",
+                "Sram"
+            ]
+        },
+        {
+            "name": "Clown",
+            "classes": [
+                "Sram",
+                "Elio"
+            ]
+        },
+        {
+            "name": "AirMax TN",
+            "classes": [
+                "Roublard",
+                "Sadida"
+            ]
+        },
+        {
+            "name": "Ino",
+            "classes": [
+                "Sadida",
+                "Enutrof"
+            ]
+        },
+        {
+            "name": "jeSaisPas",
+            "classes": [
+                "Ouginak",
+                "Steamer"
+            ]
+        },
+        {
+            "name": "Exel",
+            "classes": [
+                "Cra",
+                "Enutrof"
+            ]
+        },
+        {
+            "name": "Les p'tits nouveaux",
+            "classes": [
+                "Enutrof",
+                "Sadida"
+            ]
+        },
+        {
+            "name": "Coach diff",
+            "classes": [
+                "Sadida",
+                "Enutrof"
+            ]
+        }
+    ],
+    "tournament": {
+        "format": "double_elimination",
+        "generatedAt": "2026-02-16",
+        "participants": [
+            "Mallefisk",
+            "Shura",
+            "RigueurSacrificeDestin",
+            "Ice-climbers",
+            "Vina y Boomie",
+            "Hof",
+            "Copilotte",
+            "Skrys",
+            "Lyra & ctln",
+            "Clown",
+            "AirMax TN",
+            "Ino",
+            "jeSaisPas",
+            "Exel",
+            "Les p'tits nouveaux",
+            "Coach diff"
+        ],
+        "champion": "Mallefisk",
+        "losers_champion": "Lyra & ctln",
+        "grand_final": [
+            {
+                "id": "grand_final-m1",
+                "teamA": "Mallefisk",
+                "teamB": "Lyra & ctln",
+                "winner": "Mallefisk",
+                "score": "2-1"
+            }
+        ],
+        "bracket": {
+            "round_of_16": [
+                {
+                    "id": "round_of_16-m1",
+                    "teamA": "Mallefisk",
+                    "teamB": "Shura",
+                    "winner": "Mallefisk",
+                    "score": "2-1"
+                },
+                {
+                    "id": "round_of_16-m2",
+                    "teamA": "RigueurSacrificeDestin",
+                    "teamB": "Ice-climbers",
+                    "winner": "RigueurSacrificeDestin",
+                    "score": "2-1"
+                },
+                {
+                    "id": "round_of_16-m3",
+                    "teamA": "Vina y Boomie",
+                    "teamB": "Hof",
+                    "winner": "Vina y Boomie",
+                    "score": "2-1"
+                },
+                {
+                    "id": "round_of_16-m4",
+                    "teamA": "Copilotte",
+                    "teamB": "Skrys",
+                    "winner": "Copilotte",
+                    "score": "2-1"
+                },
+                {
+                    "id": "round_of_16-m5",
+                    "teamA": "Lyra & ctln",
+                    "teamB": "Clown",
+                    "winner": "Lyra & ctln",
+                    "score": "2-1"
+                },
+                {
+                    "id": "round_of_16-m6",
+                    "teamA": "AirMax TN",
+                    "teamB": "Ino",
+                    "winner": "AirMax TN",
+                    "score": "2-1"
+                },
+                {
+                    "id": "round_of_16-m7",
+                    "teamA": "jeSaisPas",
+                    "teamB": "Exel",
+                    "winner": "jeSaisPas",
+                    "score": "2-1"
+                },
+                {
+                    "id": "round_of_16-m8",
+                    "teamA": "Les p'tits nouveaux",
+                    "teamB": "Coach diff",
+                    "winner": "Les p'tits nouveaux",
+                    "score": "2-1"
+                }
+            ],
+            "quarterfinals": [
+                {
+                    "id": "quarterfinals-m1",
+                    "teamA": "Mallefisk",
+                    "teamB": "RigueurSacrificeDestin",
+                    "winner": "Mallefisk",
+                    "score": "2-1"
+                },
+                {
+                    "id": "quarterfinals-m2",
+                    "teamA": "Vina y Boomie",
+                    "teamB": "Copilotte",
+                    "winner": "Vina y Boomie",
+                    "score": "2-1"
+                },
+                {
+                    "id": "quarterfinals-m3",
+                    "teamA": "Lyra & ctln",
+                    "teamB": "AirMax TN",
+                    "winner": "Lyra & ctln",
+                    "score": "2-1"
+                },
+                {
+                    "id": "quarterfinals-m4",
+                    "teamA": "jeSaisPas",
+                    "teamB": "Les p'tits nouveaux",
+                    "winner": "jeSaisPas",
+                    "score": "2-1"
+                }
+            ],
+            "semifinals": [
+                {
+                    "id": "semifinals-m1",
+                    "teamA": "Mallefisk",
+                    "teamB": "Vina y Boomie",
+                    "winner": "Mallefisk",
+                    "score": "2-1"
+                },
+                {
+                    "id": "semifinals-m2",
+                    "teamA": "Lyra & ctln",
+                    "teamB": "jeSaisPas",
+                    "winner": "Lyra & ctln",
+                    "score": "2-1"
+                }
+            ],
+            "final": [
+                {
+                    "id": "final-m1",
+                    "teamA": "Mallefisk",
+                    "teamB": "Lyra & ctln",
+                    "winner": "Mallefisk",
+                    "score": "2-1"
+                }
+            ]
+        },
+        "losers_bracket": {
+            "losers_round_1": [
+                {
+                    "id": "losers_round_1-m1",
+                    "teamA": "Shura",
+                    "teamB": "Ice-climbers",
+                    "winner": "Shura",
+                    "score": "2-1"
+                },
+                {
+                    "id": "losers_round_1-m2",
+                    "teamA": "Hof",
+                    "teamB": "Skrys",
+                    "winner": "Skrys",
+                    "score": "1-2"
+                },
+                {
+                    "id": "losers_round_1-m3",
+                    "teamA": "Clown",
+                    "teamB": "Ino",
+                    "winner": "Clown",
+                    "score": "2-1"
+                },
+                {
+                    "id": "losers_round_1-m4",
+                    "teamA": "Exel",
+                    "teamB": "Coach diff",
+                    "winner": "Exel",
+                    "score": "2-1"
+                }
+            ],
+            "losers_round_2": [
+                {
+                    "id": "losers_round_2-m1",
+                    "teamA": "Shura",
+                    "teamB": "RigueurSacrificeDestin",
+                    "winner": "RigueurSacrificeDestin",
+                    "score": "1-2"
+                },
+                {
+                    "id": "losers_round_2-m2",
+                    "teamA": "Skrys",
+                    "teamB": "Copilotte",
+                    "winner": "Copilotte",
+                    "score": "1-2"
+                },
+                {
+                    "id": "losers_round_2-m3",
+                    "teamA": "Clown",
+                    "teamB": "AirMax TN",
+                    "winner": "AirMax TN",
+                    "score": "1-2"
+                },
+                {
+                    "id": "losers_round_2-m4",
+                    "teamA": "Exel",
+                    "teamB": "Les p'tits nouveaux",
+                    "winner": "Les p'tits nouveaux",
+                    "score": "1-2"
+                }
+            ],
+            "losers_semifinals": [
+                {
+                    "id": "losers_semifinals-m1",
+                    "teamA": "RigueurSacrificeDestin",
+                    "teamB": "Copilotte",
+                    "winner": "Copilotte",
+                    "score": "1-2"
+                },
+                {
+                    "id": "losers_semifinals-m2",
+                    "teamA": "AirMax TN",
+                    "teamB": "Les p'tits nouveaux",
+                    "winner": "Les p'tits nouveaux",
+                    "score": "1-2"
+                },
+                {
+                    "id": "losers_semifinals-m3",
+                    "teamA": "Vina y Boomie",
+                    "teamB": "jeSaisPas",
+                    "winner": "Vina y Boomie",
+                    "score": "2-1"
+                }
+            ],
+            "losers_final": [
+                {
+                    "id": "losers_final-m1",
+                    "teamA": "Copilotte",
+                    "teamB": "Les p'tits nouveaux",
+                    "winner": "Copilotte",
+                    "score": "2-1"
+                },
+                {
+                    "id": "losers_final-m2",
+                    "teamA": "Vina y Boomie",
+                    "teamB": "Lyra & ctln",
+                    "winner": "Lyra & ctln",
+                    "score": "1-2"
+                }
+            ],
+            "losers_grand_final": [
+                {
+                    "id": "losers_grand_final-m1",
+                    "teamA": "Copilotte",
+                    "teamB": "Lyra & ctln",
+                    "winner": "Lyra & ctln",
+                    "score": "1-2"
+                }
+            ]
+        }
+    }
 }

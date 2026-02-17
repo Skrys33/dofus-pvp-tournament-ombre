@@ -225,9 +225,32 @@ const formatRoundLabel = (roundKey) => {
 }
 
 const resolveOrderedRounds = (bracket) => {
+  const roundOrder = {
+    round_of_64: 1,
+    round_of_32: 2,
+    round_of_16: 3,
+    quarterfinals: 4,
+    semifinals: 5,
+    final: 6,
+    grand_final: 7,
+    grand_final_reset: 8,
+    losers_round_1: 1,
+    losers_round_2: 2,
+    losers_semifinals: 3,
+    losers_final: 4,
+    losers_grand_final: 5
+  }
+
   return Object.entries(bracket ?? {})
     .filter(([, matches]) => Array.isArray(matches) && matches.length > 0)
-    .sort((a, b) => b[1].length - a[1].length)
+    .sort((a, b) => {
+      const orderA = roundOrder[a[0]]
+      const orderB = roundOrder[b[0]]
+      if (orderA !== undefined && orderB !== undefined) return orderA - orderB
+      if (orderA !== undefined) return -1
+      if (orderB !== undefined) return 1
+      return a[0].localeCompare(b[0])
+    })
 }
 
 const resolvePlayersByName = (players) => {
@@ -244,6 +267,18 @@ const resolveRoundLayout = (roundIndex) => {
   const gap = Math.max(centerDistance - BRACKET_CARD_HEIGHT, BRACKET_BASE_GAP)
   const offset = Math.max(centerDistance / 2 - BRACKET_CARD_HEIGHT / 2, 0)
   return { gap, offset }
+}
+
+const resolveLayoutRoundIndex = (bracketType, roundIndex, roundKey) => {
+  let layoutRoundIndex = roundIndex
+  if (bracketType === 'losers' && roundIndex > 0) {
+    // Keep losers_round_1 and losers_round_2 aligned, then compact following rounds.
+    layoutRoundIndex = roundIndex - 1
+  }
+  if (roundKey === 'losers_grand_final' && layoutRoundIndex > 0) {
+    layoutRoundIndex -= 1
+  }
+  return layoutRoundIndex
 }
 
 const resolveTeamScores = (score) => {
@@ -322,8 +357,8 @@ function MatchCard({
   const topHighlighted = hoveredTeam !== null && hoveredTeam === teamA
   const bottomHighlighted = hoveredTeam !== null && hoveredTeam === teamB
   const outgoingHighlighted = hoveredTeam !== null && hoveredTeam === match.winner
-  const hasPromotionPathOnTop = roundKey === 'losers_final' && match.winner === teamA
-  const hasPromotionPathOnBottom = roundKey === 'losers_final' && match.winner === teamB
+  const hasPromotionPathOnTop = roundKey === 'losers_grand_final' && match.winner === teamA
+  const hasPromotionPathOnBottom = roundKey === 'losers_grand_final' && match.winner === teamB
 
   return (
     <article
@@ -362,7 +397,16 @@ function MatchCard({
   )
 }
 
-function BracketTree({ title, rounds, playersByName, hoveredTeam, onHoverTeam, onLeaveTeam, showPromotionRail }) {
+function BracketTree({
+  title,
+  rounds,
+  playersByName,
+  hoveredTeam,
+  onHoverTeam,
+  onLeaveTeam,
+  showPromotionRail,
+  bracketType
+}) {
   const resolveIncomingLink = (roundIndex, previousRoundWinners, teamName, incomingOverride) => {
     if (typeof incomingOverride === 'boolean') return incomingOverride
     if (roundIndex === 0 || !teamName) return false
@@ -370,18 +414,43 @@ function BracketTree({ title, rounds, playersByName, hoveredTeam, onHoverTeam, o
   }
 
   return (
-    <section className="bracket-section" data-promotion-up={showPromotionRail ? 'true' : 'false'}>
+    <section
+      className="bracket-section"
+      data-promotion-up={showPromotionRail ? 'true' : 'false'}
+      data-bracket-type={bracketType}
+    >
       <h3 className="bracket-section-title">{title}</h3>
       <div className="tree-wrap" role="region" aria-label={title}>
         <div className="bracket-grid">
           {rounds.map((round, roundIndex) => {
-            const layout = resolveRoundLayout(roundIndex)
+            const previousRound = roundIndex > 0 ? rounds[roundIndex - 1] : null
+            const layoutRoundIndex = resolveLayoutRoundIndex(bracketType, roundIndex, round.key)
+            const previousLayoutRoundIndex =
+              previousRound ? resolveLayoutRoundIndex(bracketType, roundIndex - 1, previousRound.key) : null
+            let layout = resolveRoundLayout(layoutRoundIndex)
+
+            const isLosersFinalBetweenThreeSemifinals =
+              bracketType === 'losers' &&
+              round.key === 'losers_final' &&
+              Array.isArray(round.matches) &&
+              round.matches.length === 2 &&
+              Array.isArray(previousRound?.matches) &&
+              previousRound.matches.length === 3 &&
+              previousLayoutRoundIndex !== null
+
+            if (isLosersFinalBetweenThreeSemifinals) {
+              const previousLayout = resolveRoundLayout(previousLayoutRoundIndex)
+              const previousCenterDistance = BRACKET_CARD_HEIGHT + previousLayout.gap
+              layout = {
+                gap: previousLayout.gap,
+                offset: previousLayout.offset + previousCenterDistance / 2
+              }
+            }
             const hasNextRound = roundIndex < rounds.length - 1
             const isPromotionColumn = showPromotionRail && roundIndex === rounds.length - 1
             const promotionWinner =
-              isPromotionColumn && round.key === 'losers_final' ? round.matches?.[0]?.winner ?? null : null
+              isPromotionColumn && round.key === 'losers_grand_final' ? round.matches?.[0]?.winner ?? null : null
             const isPromotionHighlighted = Boolean(promotionWinner && hoveredTeam === promotionWinner)
-            const previousRound = roundIndex > 0 ? rounds[roundIndex - 1] : null
             const previousRoundWinners = new Set(
               (previousRound?.matches ?? []).map((previousMatch) => previousMatch?.winner).filter(Boolean)
             )
@@ -401,22 +470,27 @@ function BracketTree({ title, rounds, playersByName, hoveredTeam, onHoverTeam, o
                   {round.matches.map((match) => (
                     (() => {
                       const isGrandFinalRound = round.key === 'grand_final'
-                      const topCrossBracketIncoming =
+                      const isLosersBracketRound = bracketType === 'losers' && roundIndex > 0
+                      const topCrossBracketIncomingFromGrandFinal =
                         isGrandFinalRound && roundIndex > 0 && Boolean(match.teamA) && !previousRoundWinners.has(match.teamA)
-                      const bottomCrossBracketIncoming =
+                      const bottomCrossBracketIncomingFromGrandFinal =
                         isGrandFinalRound && roundIndex > 0 && Boolean(match.teamB) && !previousRoundWinners.has(match.teamB)
+                      const topIncomingFromOutsideLosersRound =
+                        isLosersBracketRound && Boolean(match.teamA) && !previousRoundWinners.has(match.teamA)
+                      const bottomIncomingFromOutsideLosersRound =
+                        isLosersBracketRound && Boolean(match.teamB) && !previousRoundWinners.has(match.teamB)
                       const hasIncomingTopLink = resolveIncomingLink(
                         roundIndex,
                         previousRoundWinners,
                         match.teamA,
                         match.incomingTopFromPrevious
-                      ) || topCrossBracketIncoming
+                      ) || topCrossBracketIncomingFromGrandFinal || topIncomingFromOutsideLosersRound
                       const hasIncomingBottomLink = resolveIncomingLink(
                         roundIndex,
                         previousRoundWinners,
                         match.teamB,
                         match.incomingBottomFromPrevious
-                      ) || bottomCrossBracketIncoming
+                      ) || bottomCrossBracketIncomingFromGrandFinal || bottomIncomingFromOutsideLosersRound
 
                       return (
                     <MatchCard
@@ -425,8 +499,8 @@ function BracketTree({ title, rounds, playersByName, hoveredTeam, onHoverTeam, o
                       playersByName={playersByName}
                       hasIncomingTopLink={hasIncomingTopLink}
                       hasIncomingBottomLink={hasIncomingBottomLink}
-                      hasCrossBracketIncomingTop={topCrossBracketIncoming}
-                      hasCrossBracketIncomingBottom={bottomCrossBracketIncoming}
+                      hasCrossBracketIncomingTop={topCrossBracketIncomingFromGrandFinal}
+                      hasCrossBracketIncomingBottom={bottomCrossBracketIncomingFromGrandFinal}
                       roundIndex={roundIndex}
                       roundKey={round.key}
                       hasNextRound={hasNextRound}
@@ -498,6 +572,7 @@ function BracketPage() {
               onHoverTeam={setHoveredTeam}
               onLeaveTeam={() => setHoveredTeam(null)}
               showPromotionRail={false}
+              bracketType="winners"
             />
           ) : null}
           {losersRounds.length > 0 ? (
@@ -515,6 +590,7 @@ function BracketPage() {
               onHoverTeam={setHoveredTeam}
               onLeaveTeam={() => setHoveredTeam(null)}
               showPromotionRail={grandFinalRounds.length > 0}
+              bracketType="losers"
             />
             </>
           ) : null}
