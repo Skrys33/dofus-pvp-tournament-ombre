@@ -1,4 +1,4 @@
-﻿{
+{
   "lastUpdated": "2026-03-03 00:00",
   "players": [
     {
@@ -6,7 +6,8 @@
       "classes": [
         "Hupper",
         "Sram"
-      ]
+      ],
+      "twitch": "https://www.twitch.tv/skryss_"
     },
     {
       "name": "Cpt-Morgn",
@@ -92,7 +93,8 @@
       "classes": [
         "Pandawa",
         "Enu"
-      ]
+      ],
+      "twitch": "https://twitch.tv/spongito_dofus"
     },
     {
       "name": "Kasta & Chippeuh",
@@ -140,7 +142,66 @@
     "champion": null,
     "losers_champion": null,
     "grand_final": [],
-    "bracket": {},
+    "bracket": {
+      "round_of_16": [
+        {
+          "id": "round_of_16-m1",
+          "teamA": "Kasta & Chippeuh",
+          "teamB": "Ino & Hof",
+          "winner": null,
+          "score": null
+        },
+        {
+          "id": "round_of_16-m2",
+          "teamA": "Fifi & Restimon",
+          "teamB": "Gensa",
+          "winner": null,
+          "score": null
+        },
+        {
+          "id": "round_of_16-m3",
+          "teamA": "Skrys",
+          "teamB": "Myny",
+          "winner": null,
+          "score": null
+        },
+        {
+          "id": "round_of_16-m4",
+          "teamA": "New-Ra-Qu",
+          "teamB": "Aplesi",
+          "winner": null,
+          "score": null
+        },
+        {
+          "id": "round_of_16-m5",
+          "teamA": "Cpt-Morgn",
+          "teamB": "Rouxcarnage & Christ",
+          "winner": null,
+          "score": null
+        },
+        {
+          "id": "round_of_16-m6",
+          "teamA": "Cosette & Drift",
+          "teamB": "Laawd & Duduj",
+          "winner": null,
+          "score": null
+        },
+        {
+          "id": "round_of_16-m7",
+          "teamA": "Nde",
+          "teamB": "Heizo & Millax",
+          "winner": null,
+          "score": null
+        },
+        {
+          "id": "round_of_16-m8",
+          "teamA": "Shangai & Ryk",
+          "teamB": "Kizu",
+          "winner": null,
+          "score": null
+        }
+      ]
+    },
     "losers_bracket": {}
   }
 }
