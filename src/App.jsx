@@ -1,7 +1,8 @@
-import { useMemo, useState } from 'react'
+﻿import { useMemo, useState } from 'react'
 import { NavLink, Route, Routes } from 'react-router-dom'
 import playersData from './data/players.json'
 import backgroundVideo from './assets/background.mp4'
+import twitchIcon from './assets/twitch-tile.svg'
 import './App.css'
 
 const classIcons = import.meta.glob('./assets/classes/*.png', { eager: true, import: 'default' })
@@ -179,6 +180,8 @@ function RankingPage() {
 }
 
 function PlayerRow({ player, order }) {
+  const twitchUrl = typeof player.twitch === 'string' && player.twitch.trim() ? player.twitch.trim() : null
+
   return (
     <tr className="player-row" style={{ '--i': order }}>
       <td className="cell-rank">#{player.rank}</td>
@@ -199,7 +202,21 @@ function PlayerRow({ player, order }) {
         </div>
       </td>
       <td className="cell-player">
-        <div className="player-name">{player.name}</div>
+        <div className="player-name-row">
+          <div className="player-name">{player.name}</div>
+          {twitchUrl ? (
+            <a
+              className="player-stream-link"
+              href={twitchUrl}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`Voir le stream Twitch de ${player.name}`}
+              title="Voir le stream Twitch"
+            >
+              <img src={twitchIcon} className="player-stream-icon" alt="" aria-hidden="true" />
+            </a>
+          ) : null}
+        </div>
       </td>
       <td className="cell-points">{player.points}</td>
     </tr>
@@ -644,13 +661,14 @@ function RulesPage() {
           Ryk, Shura et Nde.
         </p>
         <p>Avec la beta, il est possible qu'Ankama distribue encore quelques up ou nerfs.</p>
+        <p>Nde - 16/02/2026 10:07</p>
 
         <h3>2) Limitations d'equipement</h3>
         <p>Certains objets sont proscrits du fait de leur rarete/prix sur le serveur Ombre :</p>
         <ul>
           <li>Dofus interdits : Ebene, Ivoire, Vulbis, Tachete, Forgelave, Cauchemar, Nebuleux et Sylvestre.</li>
-          <li>Gargandias : panoplie et corps a corps autorises, mais pas en degats neutres.</li>
-          <li>Botte Meriana : exclue.</li>
+          <li>Gargandias : exclu.</li>
+          <li>Botte Meriana : exclu.</li>
         </ul>
         <p>Vous avez le droit de changer d'equipement a chaque combat.</p>
         <ul>

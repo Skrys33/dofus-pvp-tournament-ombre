@@ -280,6 +280,48 @@ input::placeholder {
   font-weight: 700;
 }
 
+.player-name-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.player-stream-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  color: #a970ff;
+  border: 1px solid rgba(169, 112, 255, 0.45);
+  background: rgba(169, 112, 255, 0.14);
+  transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.player-stream-link:hover {
+  transform: translateY(-1px);
+  color: #c39aff;
+  border-color: rgba(169, 112, 255, 0.8);
+  background: rgba(169, 112, 255, 0.22);
+}
+
+.player-stream-link:focus-visible {
+  outline: 2px solid rgba(169, 112, 255, 0.75);
+  outline-offset: 2px;
+}
+
+.player-stream-icon {
+  width: 24px;
+  height: 24px;
+  display: block;
+  transition: filter 0.15s ease;
+}
+
+.player-stream-link:hover .player-stream-icon {
+  filter: brightness(1.15) saturate(1.2);
+}
+
 .player-classes {
   display: flex;
   gap: 8px;
