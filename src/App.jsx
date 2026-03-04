@@ -1,4 +1,4 @@
-﻿import { useMemo, useState } from 'react'
+﻿import { useEffect, useMemo, useState } from 'react'
 import { NavLink, Route, Routes } from 'react-router-dom'
 import playersData from './data/players.json'
 import backgroundVideo from './assets/background.mp4'
@@ -6,12 +6,35 @@ import twitchIcon from './assets/twitch-tile.svg'
 import './App.css'
 
 const classIcons = import.meta.glob('./assets/classes/*.png', { eager: true, import: 'default' })
+const mapImages = import.meta.glob('./assets/maps/*.png', { eager: true, import: 'default' })
 const classIconMap = Object.fromEntries(
   Object.entries(classIcons).map(([path, src]) => {
     const key = path.split('/').pop()?.replace('.png', '')
     return [key, src]
   })
 )
+const mapImageById = Object.fromEntries(
+  Object.entries(mapImages).map(([path, src]) => {
+    const key = path.split('/').pop()?.replace('.png', '')
+    return [key, src]
+  })
+)
+
+const roundMapByKey = {
+  round_of_64: '46',
+  round_of_32: '45',
+  round_of_16: '16',
+  quarterfinals: '21',
+  semifinals: '22',
+  final: '32',
+  grand_final: '35',
+  grand_final_reset: '46',
+  losers_round_1: '38',
+  losers_round_2: '40',
+  losers_semifinals: '43',
+  losers_final: '44',
+  losers_grand_final: '45'
+}
 
 const classKeyMap = {
   cra: 'cra',
@@ -276,6 +299,13 @@ const resolvePlayersByName = (players) => {
   )
 }
 
+const resolveRoundMap = (roundKey) => {
+  const mapId = roundMapByKey[roundKey]
+  if (!mapId) return null
+  const src = mapImageById[mapId]
+  return src ? { id: mapId, src } : null
+}
+
 const BRACKET_CARD_HEIGHT = 82
 const BRACKET_BASE_GAP = 14
 
@@ -424,6 +454,8 @@ function BracketTree({
   showPromotionRail,
   bracketType
 }) {
+  const [activeMap, setActiveMap] = useState(null)
+
   const resolveIncomingLink = (roundIndex, previousRoundWinners, teamName, incomingOverride) => {
     if (typeof incomingOverride === 'boolean') return incomingOverride
     if (roundIndex === 0 || !teamName) return false
@@ -493,7 +525,14 @@ function BracketTree({
                 data-promotion-up={isPromotionColumn ? 'true' : 'false'}
                 data-promotion-highlighted={isPromotionHighlighted ? 'true' : 'false'}
               >
-                <h4 className="round-title">{formatRoundLabel(round.key)}</h4>
+                <div className="round-title-row">
+                  <h4 className="round-title">{formatRoundLabel(round.key)}</h4>
+                  <RoundMapPreview
+                    roundKey={round.key}
+                    roundLabel={formatRoundLabel(round.key)}
+                    onOpenMap={(map) => setActiveMap(map)}
+                  />
+                </div>
                 <div
                   className="round-matches"
                   style={{ '--round-gap': `${layout.gap}px`, '--round-offset': `${layout.offset}px` }}
@@ -556,7 +595,59 @@ function BracketTree({
           })}
         </div>
       </div>
+      {activeMap ? <MapModal map={activeMap} onClose={() => setActiveMap(null)} /> : null}
     </section>
+  )
+}
+
+function RoundMapPreview({ roundKey, roundLabel, onOpenMap }) {
+  const map = resolveRoundMap(roundKey)
+  if (!map) return null
+
+  return (
+    <div className="round-map">
+      <button
+        type="button"
+        className="round-map-trigger"
+        aria-label={`Voir la map du round ${roundLabel}`}
+        onClick={() => onOpenMap({ ...map, roundLabel })}
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M15 4.5L9 2L3 4.5V19.5L9 17L15 19.5L21 17V2.5L15 4.5ZM14 17.1L10 15.4V4.9L14 6.6V17.1ZM5 5.8L8 4.6V15.2L5 16.4V5.8ZM19 15.7L16 16.9V6.3L19 5.1V15.7Z"
+            fill="currentColor"
+          />
+        </svg>
+      </button>
+      <div className="round-map-preview" role="dialog" aria-label={`Map du ${roundLabel}`}>
+        <img src={map.src} alt={`Map ${map.id} - ${roundLabel}`} loading="lazy" />
+        <p>Map {map.id}</p>
+      </div>
+    </div>
+  )
+}
+
+function MapModal({ map, onClose }) {
+  useEffect(() => {
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [onClose])
+
+  return (
+    <div className="map-modal-backdrop" role="dialog" aria-modal="true" aria-label={`Map du ${map.roundLabel}`} onClick={onClose}>
+      <div className="map-modal-content" onClick={(event) => event.stopPropagation()}>
+        <button type="button" className="map-modal-close" aria-label="Fermer la map" onClick={onClose}>
+          x
+        </button>
+        <img src={map.src} alt={`Map ${map.id} - ${map.roundLabel}`} />
+        <p>
+          Map {map.id} - {map.roundLabel}
+        </p>
+      </div>
+    </div>
   )
 }
 
