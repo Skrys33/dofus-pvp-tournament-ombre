@@ -156,18 +156,18 @@
       },
       "losers_round_3": {
         "map": 35,
-        "day": "Vendredi 06/03/2026"
-      },
-      "losers_semifinals": {
-        "map": 35,
         "day": "Samedi 07/03/2026"
       },
-      "losers_final": {
+      "losers_semifinals": {
         "map": 16,
         "day": "Samedi 07/03/2026"
       },
-      "losers_grand_final": {
+      "losers_final": {
         "map": 21,
+        "day": "Samedi 07/03/2026"
+      },
+      "losers_grand_final": {
+        "map": 38,
         "day": "Dimanche 08/03/2026"
       }
     },
