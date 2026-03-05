@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-03 00:00",
+  "lastUpdated": "2026-03-05 17:48",
   "players": [
     {
       "name": "Skrys",
@@ -92,7 +92,7 @@
       "live": false
     },
     {
-      "name": "Laawd & Dudu",
+      "name": "Laawd & Dujduj",
       "classes": [
         "Pandawa",
         "Enu"
@@ -184,7 +184,7 @@
       "Fifi & Restimon",
       "Kizu",
       "Aplesi",
-      "Laawd & Duduj",
+      "Laawd & Dujduj",
       "Kasta & Chippeuh",
       "Heizo & Millax",
       "Cosette & Drift"
@@ -246,7 +246,7 @@
         },
         {
           "id": "round_of_16-m7",
-          "teamA": "Laawd & Dudu",
+          "teamA": "Laawd & Dujduj",
           "teamB": "Kizu",
           "winner": null,
           "score": null
