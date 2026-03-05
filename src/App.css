@@ -534,11 +534,13 @@ input::placeholder {
 }
 
 .round-map-trigger {
-  width: 24px;
+  min-width: 24px;
   height: 24px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 4px;
+  padding: 0 6px;
   border-radius: 6px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   background: rgba(255, 255, 255, 0.08);
@@ -559,8 +561,15 @@ input::placeholder {
 }
 
 .round-map-trigger svg {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
+}
+
+.round-map-id {
+  font-size: 0.67rem;
+  letter-spacing: 0.02em;
+  font-weight: 600;
+  line-height: 1;
 }
 
 .round-map-preview {

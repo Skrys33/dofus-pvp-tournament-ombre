@@ -20,12 +20,28 @@ const mapImageById = Object.fromEntries(
   })
 )
 
+const mapNameById = {
+  '46': 'Contes',
+  '32': 'Ambre',
+  '44': 'Ephedria',
+  '45': 'Albuera',
+  '35': 'Possede I',
+  '16': 'Srambad',
+  '21': 'Champs',
+  '38': 'Wukin',
+  '22': 'Martegel',
+  '43': 'Ereboria',
+  '40': 'Bonta'
+}
+
 const resolveRoundMap = (roundMeta) => {
   const roundMap = roundMeta?.map
   const mapId = roundMap !== undefined && roundMap !== null ? String(roundMap).trim() : null
   if (!mapId) return null
   const src = mapImageById[mapId]
-  return src ? { id: mapId, src } : null
+  if (!src) return null
+  const name = mapNameById[mapId] ?? null
+  return { id: mapId, src, name }
 }
 
 const resolveRoundDay = (roundMeta) => {
@@ -689,13 +705,14 @@ function BracketTree({
 function RoundMapPreview({ roundMeta, roundLabel, onOpenMap }) {
   const map = resolveRoundMap(roundMeta)
   if (!map) return null
+  const mapDisplay = map.name ? `Map ${map.id} - ${map.name}` : `Map ${map.id}`
 
   return (
     <div className="round-map">
       <button
         type="button"
         className="round-map-trigger"
-        aria-label={`Voir la map du round ${roundLabel}`}
+        aria-label={`Voir ${mapDisplay} du round ${roundLabel}`}
         onClick={() => onOpenMap({ ...map, roundLabel })}
       >
         <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -704,16 +721,19 @@ function RoundMapPreview({ roundMeta, roundLabel, onOpenMap }) {
             fill="currentColor"
           />
         </svg>
+        <span className="round-map-id">{map.id}</span>
       </button>
       <div className="round-map-preview" role="dialog" aria-label={`Map du ${roundLabel}`}>
-        <img src={map.src} alt={`Map ${map.id} - ${roundLabel}`} loading="lazy" />
-        <p>Map {map.id}</p>
+        <img src={map.src} alt={`${mapDisplay} - ${roundLabel}`} loading="lazy" />
+        <p>{mapDisplay}</p>
       </div>
     </div>
   )
 }
 
 function MapModal({ map, onClose }) {
+  const mapDisplay = map.name ? `Map ${map.id} - ${map.name}` : `Map ${map.id}`
+
   useEffect(() => {
     const onKeyDown = (event) => {
       if (event.key === 'Escape') onClose()
@@ -728,9 +748,9 @@ function MapModal({ map, onClose }) {
         <button type="button" className="map-modal-close" aria-label="Fermer la map" onClick={onClose}>
           x
         </button>
-        <img src={map.src} alt={`Map ${map.id} - ${map.roundLabel}`} />
+        <img src={map.src} alt={`${mapDisplay} - ${map.roundLabel}`} />
         <p>
-          Map {map.id} - {map.roundLabel}
+          {mapDisplay} - {map.roundLabel}
         </p>
       </div>
     </div>
