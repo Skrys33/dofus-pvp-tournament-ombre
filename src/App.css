@@ -854,6 +854,15 @@ input::placeholder {
   border-top: 1px solid rgba(255, 255, 255, 0.38);
 }
 
+.bracket-section[data-bracket-type='winners']
+  .round-column[data-round-key='quarterfinals']
+  .match-team[data-incoming='true']::before {
+  content: '';
+  display: block;
+  visibility: visible;
+  opacity: 1;
+}
+
 .match-team[data-highlighted='true'] {
   outline: 1px solid #fff;
   outline-offset: -1px;

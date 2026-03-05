@@ -206,8 +206,8 @@
           "id": "round_of_16-m1",
           "teamA": "Shangai & Ryk",
           "teamB": "Rouxcarnage & Christ",
-          "winner": null,
-          "score": null
+          "winner": "Shangai & Ryk",
+          "score": "1-0"
         },
         {
           "id": "round_of_16-m2",
@@ -262,7 +262,7 @@
       "quarterfinals": [
         {
           "id": "quarterfinals-m1",
-          "teamA": null,
+          "teamA": "Shangai & Ryk",
           "teamB": null,
           "winner": null,
           "score": null
@@ -319,7 +319,7 @@
       "losers_round_1": [
         {
           "id": "losers_round_1-m1",
-          "teamA": null,
+          "teamA": "Rouxcarnage & Christ",
           "teamB": null,
           "winner": null,
           "score": null
