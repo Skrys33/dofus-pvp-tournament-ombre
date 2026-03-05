@@ -546,6 +546,14 @@ function BracketTree({
 }) {
   const [activeMap, setActiveMap] = useState(null)
 
+  const openMap = (map) => {
+    if (!map?.src) return
+    const image = new Image()
+    image.onload = () => setActiveMap(map)
+    image.onerror = () => setActiveMap(map)
+    image.src = map.src
+  }
+
   const resolveIncomingLink = (roundIndex, previousRoundWinners, teamName, incomingOverride) => {
     if (typeof incomingOverride === 'boolean') return incomingOverride
     if (roundIndex === 0) return false
@@ -624,7 +632,7 @@ function BracketTree({
                   <RoundMapPreview
                     roundMeta={round.meta}
                     roundLabel={roundLabel}
-                    onOpenMap={(map) => setActiveMap(map)}
+                    onOpenMap={openMap}
                   />
                 </div>
                 {roundDay ? <p className="round-day">{roundDay}</p> : null}

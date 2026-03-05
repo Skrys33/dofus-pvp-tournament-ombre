@@ -611,6 +611,18 @@ input::placeholder {
   transform: translateX(-50%) translateY(0);
 }
 
+@media (hover: none), (pointer: coarse) {
+  .round-map-preview {
+    display: none;
+  }
+
+  .round-map-trigger:hover {
+    transform: none;
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+}
+
 .map-modal-backdrop {
   position: fixed;
   inset: 0;
