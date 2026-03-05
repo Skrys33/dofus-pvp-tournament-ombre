@@ -20,20 +20,22 @@ const mapImageById = Object.fromEntries(
   })
 )
 
-const roundMapByKey = {
-  round_of_64: '46',
-  round_of_32: '45',
-  round_of_16: '16',
-  quarterfinals: '21',
-  semifinals: '22',
-  final: '32',
-  grand_final: '35',
-  grand_final_reset: '46',
-  losers_round_1: '38',
-  losers_round_2: '40',
-  losers_semifinals: '43',
-  losers_final: '44',
-  losers_grand_final: '45'
+const resolveRoundMap = (roundMeta) => {
+  const roundMap = roundMeta?.map
+  const mapId = roundMap !== undefined && roundMap !== null ? String(roundMap).trim() : null
+  if (!mapId) return null
+  const src = mapImageById[mapId]
+  return src ? { id: mapId, src } : null
+}
+
+const resolveRoundDay = (roundMeta) => {
+  if (typeof roundMeta?.day !== 'string') return null
+  const day = roundMeta.day.trim()
+  return day || null
+}
+
+const resolveRoundMetaByKey = (tournament) => {
+  return tournament?.rounds_meta ?? tournament?.roundsMeta ?? tournament?.round_metadata ?? {}
 }
 
 const classKeyMap = {
@@ -370,13 +372,6 @@ const resolvePlayersByName = (players) => {
   )
 }
 
-const resolveRoundMap = (roundKey) => {
-  const mapId = roundMapByKey[roundKey]
-  if (!mapId) return null
-  const src = mapImageById[mapId]
-  return src ? { id: mapId, src } : null
-}
-
 const BRACKET_CARD_HEIGHT = 82
 const BRACKET_BASE_GAP = 14
 
@@ -558,6 +553,8 @@ function BracketTree({
         <div className="bracket-grid">
           {rounds.map((round, roundIndex) => {
             const previousRound = roundIndex > 0 ? rounds[roundIndex - 1] : null
+            const roundLabel = formatRoundLabel(round.key)
+            const roundDay = resolveRoundDay(round.meta)
             const layoutRoundIndex = resolveLayoutRoundIndex(bracketType, roundIndex, round.key)
             const previousLayoutRoundIndex =
               previousRound ? resolveLayoutRoundIndex(bracketType, roundIndex - 1, previousRound.key) : null
@@ -597,13 +594,14 @@ function BracketTree({
                 data-promotion-highlighted={isPromotionHighlighted ? 'true' : 'false'}
               >
                 <div className="round-title-row">
-                  <h4 className="round-title">{formatRoundLabel(round.key)}</h4>
+                  <h4 className="round-title">{roundLabel}</h4>
                   <RoundMapPreview
-                    roundKey={round.key}
-                    roundLabel={formatRoundLabel(round.key)}
+                    roundMeta={round.meta}
+                    roundLabel={roundLabel}
                     onOpenMap={(map) => setActiveMap(map)}
                   />
                 </div>
+                {roundDay ? <p className="round-day">{roundDay}</p> : null}
                 <div
                   className="round-matches"
                   style={{ '--round-gap': `${layout.gap}px`, '--round-offset': `${layout.offset}px` }}
@@ -671,8 +669,8 @@ function BracketTree({
   )
 }
 
-function RoundMapPreview({ roundKey, roundLabel, onOpenMap }) {
-  const map = resolveRoundMap(roundKey)
+function RoundMapPreview({ roundMeta, roundLabel, onOpenMap }) {
+  const map = resolveRoundMap(roundMeta)
   if (!map) return null
 
   return (
@@ -724,10 +722,19 @@ function MapModal({ map, onClose }) {
 
 function BracketPage() {
   const tournament = playersData?.tournament ?? {}
-  const winnersRoundsBase = resolveOrderedRounds(playersData?.tournament?.bracket).map(([key, matches]) => ({ key, matches }))
+  const roundMetaByKey = resolveRoundMetaByKey(tournament)
+  const winnersRoundsBase = resolveOrderedRounds(playersData?.tournament?.bracket).map(([key, matches]) => ({
+    key,
+    matches,
+    meta: roundMetaByKey[key] ?? null
+  }))
   const losersRounds = resolveOrderedRounds(
     playersData?.tournament?.losers_bracket ?? playersData?.tournament?.losersBracket
-  ).map(([key, matches]) => ({ key, matches }))
+  ).map(([key, matches]) => ({
+    key,
+    matches,
+    meta: roundMetaByKey[key] ?? null
+  }))
   const playersByName = useMemo(() => resolvePlayersByName(playersData?.players), [])
   const champion = tournament?.champion
   const losersChampion = tournament?.losers_champion ?? tournament?.losersChampion
@@ -743,7 +750,10 @@ function BracketPage() {
           }
         ]
       : []
-  const grandFinalRounds = grandFinalMatches.length > 0 ? [{ key: 'grand_final', matches: grandFinalMatches }] : []
+  const grandFinalRounds =
+    grandFinalMatches.length > 0
+      ? [{ key: 'grand_final', matches: grandFinalMatches, meta: roundMetaByKey.grand_final ?? null }]
+      : []
   const winnersRounds = [...winnersRoundsBase, ...grandFinalRounds]
   const [hoveredTeam, setHoveredTeam] = useState(null)
   const hasAnyBracket = winnersRounds.length > 0 || losersRounds.length > 0

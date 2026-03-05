@@ -48,7 +48,7 @@
       ]
     },
     {
-      "name": "Myny",
+      "name": "Myny & Agi",
       "classes": [
         "Iop",
         "Zobal"
@@ -92,7 +92,7 @@
       "live": false
     },
     {
-      "name": "Laawd & Duduj",
+      "name": "Laawd & Dudu",
       "classes": [
         "Pandawa",
         "Enu"
@@ -125,6 +125,48 @@
   "tournament": {
     "format": "double_elimination",
     "generatedAt": "2026-03-03",
+    "rounds_meta": {
+      "round_of_16": {
+        "map": 46,
+        "day": "Vendredi 06/03/2026"
+      },
+      "quarterfinals": {
+        "map": 44,
+        "day": "Vendredi 06/03/2026"
+      },
+      "semifinals": {
+        "map": 35,
+        "day": "Samedi 07/03/2026"
+      },
+      "final": {
+        "map": 22,
+        "day": "Dimanche 08/03/2026"
+      },
+      "grand_final": {
+        "map": 43,
+        "day": "Dimanche 08/03/2026"
+      },
+      "losers_round_1": {
+        "map": 32,
+        "day": "Vendredi 06/03/2026"
+      },
+      "losers_round_2": {
+        "map": 45,
+        "day": "Vendredi 06/03/2026"
+      },
+      "losers_semifinals": {
+        "map": 35,
+        "day": "Samedi 07/03/2026"
+      },
+      "losers_final": {
+        "map": 16,
+        "day": "Samedi 07/03/2026"
+      },
+      "losers_grand_final": {
+        "map": 21,
+        "day": "Dimanche 08/03/2026"
+      }
+    },
     "participants": [
       "Skrys",
       "Cpt-Morgn",
@@ -132,7 +174,7 @@
       "Ino & Hof",
       "Gensa",
       "Rouxcarnage & Christ",
-      "Myny",
+      "Myny & Agi",
       "Shangai & Ryk",
       "New-Ra-Qu",
       "Fifi & Restimon",
@@ -145,67 +187,239 @@
     ],
     "champion": null,
     "losers_champion": null,
-    "grand_final": [],
+    "grand_final": [
+      {
+        "id": "grand_final-m1",
+        "teamA": null,
+        "teamB": null,
+        "winner": null,
+        "score": null
+      }
+    ],
     "bracket": {
       "round_of_16": [
         {
           "id": "round_of_16-m1",
-          "teamA": "Kasta & Chippeuh",
-          "teamB": "Ino & Hof",
+          "teamA": "Shangai & Ryk",
+          "teamB": "Rouxcarnage & Christ",
           "winner": null,
           "score": null
         },
         {
           "id": "round_of_16-m2",
-          "teamA": "Fifi & Restimon",
+          "teamA": "Aplesi",
           "teamB": "Gensa",
           "winner": null,
           "score": null
         },
         {
           "id": "round_of_16-m3",
-          "teamA": "Skrys",
-          "teamB": "Myny",
+          "teamA": "Nde",
+          "teamB": "Myny & Agi",
           "winner": null,
           "score": null
         },
         {
           "id": "round_of_16-m4",
-          "teamA": "New-Ra-Qu",
-          "teamB": "Aplesi",
-          "winner": null,
-          "score": null
-        },
-        {
-          "id": "round_of_16-m5",
           "teamA": "Cpt-Morgn",
-          "teamB": "Rouxcarnage & Christ",
-          "winner": null,
-          "score": null
-        },
-        {
-          "id": "round_of_16-m6",
-          "teamA": "Cosette & Drift",
-          "teamB": "Laawd & Duduj",
-          "winner": null,
-          "score": null
-        },
-        {
-          "id": "round_of_16-m7",
-          "teamA": "Nde",
           "teamB": "Heizo & Millax",
           "winner": null,
           "score": null
         },
         {
-          "id": "round_of_16-m8",
-          "teamA": "Shangai & Ryk",
+          "id": "round_of_16-m5",
+          "teamA": "Skrys",
+          "teamB": "New-Ra-Qu",
+          "winner": null,
+          "score": null
+        },
+        {
+          "id": "round_of_16-m6",
+          "teamA": "Fifi & Restimon",
+          "teamB": "Ino & Hof",
+          "winner": null,
+          "score": null
+        },
+        {
+          "id": "round_of_16-m7",
+          "teamA": "Laawd & Dudu",
           "teamB": "Kizu",
+          "winner": null,
+          "score": null
+        },
+        {
+          "id": "round_of_16-m8",
+          "teamA": "Cosette & Drift",
+          "teamB": "Kasta & Chippeuh",
+          "winner": null,
+          "score": null
+        }
+      ],
+      "quarterfinals": [
+        {
+          "id": "quarterfinals-m1",
+          "teamA": null,
+          "teamB": null,
+          "winner": null,
+          "score": null
+        },
+        {
+          "id": "quarterfinals-m2",
+          "teamA": null,
+          "teamB": null,
+          "winner": null,
+          "score": null
+        },
+        {
+          "id": "quarterfinals-m3",
+          "teamA": null,
+          "teamB": null,
+          "winner": null,
+          "score": null
+        },
+        {
+          "id": "quarterfinals-m4",
+          "teamA": null,
+          "teamB": null,
+          "winner": null,
+          "score": null
+        }
+      ],
+      "semifinals": [
+        {
+          "id": "semifinals-m1",
+          "teamA": null,
+          "teamB": null,
+          "winner": null,
+          "score": null
+        },
+        {
+          "id": "semifinals-m2",
+          "teamA": null,
+          "teamB": null,
+          "winner": null,
+          "score": null
+        }
+      ],
+      "final": [
+        {
+          "id": "final-m1",
+          "teamA": null,
+          "teamB": null,
           "winner": null,
           "score": null
         }
       ]
     },
-    "losers_bracket": {}
+    "losers_bracket": {
+      "losers_round_1": [
+        {
+          "id": "losers_round_1-m1",
+          "teamA": null,
+          "teamB": null,
+          "winner": null,
+          "score": null
+        },
+        {
+          "id": "losers_round_1-m2",
+          "teamA": null,
+          "teamB": null,
+          "winner": null,
+          "score": null
+        },
+        {
+          "id": "losers_round_1-m3",
+          "teamA": null,
+          "teamB": null,
+          "winner": null,
+          "score": null
+        },
+        {
+          "id": "losers_round_1-m4",
+          "teamA": null,
+          "teamB": null,
+          "winner": null,
+          "score": null
+        }
+      ],
+      "losers_round_2": [
+        {
+          "id": "losers_round_2-m1",
+          "teamA": null,
+          "teamB": null,
+          "winner": null,
+          "score": null
+        },
+        {
+          "id": "losers_round_2-m2",
+          "teamA": null,
+          "teamB": null,
+          "winner": null,
+          "score": null
+        },
+        {
+          "id": "losers_round_2-m3",
+          "teamA": null,
+          "teamB": null,
+          "winner": null,
+          "score": null
+        },
+        {
+          "id": "losers_round_2-m4",
+          "teamA": null,
+          "teamB": null,
+          "winner": null,
+          "score": null
+        }
+      ],
+      "losers_semifinals": [
+        {
+          "id": "losers_semifinals-m1",
+          "teamA": null,
+          "teamB": null,
+          "winner": null,
+          "score": null
+        },
+        {
+          "id": "losers_semifinals-m2",
+          "teamA": null,
+          "teamB": null,
+          "winner": null,
+          "score": null
+        },
+        {
+          "id": "losers_semifinals-m3",
+          "teamA": null,
+          "teamB": null,
+          "winner": null,
+          "score": null
+        }
+      ],
+      "losers_final": [
+        {
+          "id": "losers_final-m1",
+          "teamA": null,
+          "teamB": null,
+          "winner": null,
+          "score": null
+        },
+        {
+          "id": "losers_final-m2",
+          "teamA": null,
+          "teamB": null,
+          "winner": null,
+          "score": null
+        }
+      ],
+      "losers_grand_final": [
+        {
+          "id": "losers_grand_final-m1",
+          "teamA": null,
+          "teamB": null,
+          "winner": null,
+          "score": null
+        }
+      ]
+    }
   }
 }

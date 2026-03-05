@@ -519,6 +519,14 @@ input::placeholder {
   text-align: center;
 }
 
+.round-day {
+  margin: -4px 0 10px;
+  text-align: center;
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+  letter-spacing: 0.03em;
+}
+
 .round-map {
   position: relative;
   display: inline-flex;
