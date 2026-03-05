@@ -322,6 +322,44 @@ input::placeholder {
   filter: brightness(1.15) saturate(1.2);
 }
 
+.player-live-status {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  display: inline-block;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.28);
+}
+
+.player-live-status.online {
+  animation: livePulse 1.8s ease-in-out infinite;
+}
+
+.player-live-status.offline {
+  background: #7d8293;
+  box-shadow: 0 0 0 1px rgba(125, 130, 147, 0.45);
+  opacity: 0.65;
+}
+
+.player-live-status.online-red {
+  background: #ef4444;
+  box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.45), 0 0 10px rgba(239, 68, 68, 0.55);
+}
+
+.player-live-status.online-green {
+  background: #22c55e;
+  box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.45), 0 0 10px rgba(34, 197, 94, 0.55);
+}
+
+@keyframes livePulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.12);
+  }
+}
+
 .player-classes {
   display: flex;
   gap: 8px;

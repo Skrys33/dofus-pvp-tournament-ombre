@@ -7,7 +7,8 @@
         "Hupper",
         "Sram"
       ],
-      "twitch": "https://www.twitch.tv/skryss_"
+      "twitch": "https://www.twitch.tv/skryss_",
+      "live": true
     },
     {
       "name": "Cpt-Morgn",
@@ -15,7 +16,8 @@
         "Ouginak",
         "Pandawa"
       ],
-      "twitch": "https://twitch.tv/cpt_morgn_ily"
+      "twitch": "https://twitch.tv/cpt_morgn_ily",
+      "live": false
     },
     {
       "name": "Nde",
@@ -86,7 +88,8 @@
         "Sram",
         "Zobal"
       ],
-      "twitch": "https://twitch.tv/aplesi"
+      "twitch": "https://twitch.tv/aplesi",
+      "live": false
     },
     {
       "name": "Laawd & Duduj",
@@ -94,7 +97,8 @@
         "Pandawa",
         "Enu"
       ],
-      "twitch": "https://twitch.tv/spongito_dofus"
+      "twitch": "https://twitch.tv/spongito_dofus",
+      "live": false
     },
     {
       "name": "Kasta & Chippeuh",

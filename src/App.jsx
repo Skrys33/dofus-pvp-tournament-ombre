@@ -69,6 +69,25 @@ const classKeyMap = {
 
 const normalize = (value) => value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
 const normalizeKey = (value) => value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+const LIVE_STATUS_POLL_MS = 120000
+
+const extractTwitchChannel = (url) => {
+  if (typeof url !== 'string' || !url.trim()) return null
+  try {
+    const parsed = new URL(url.trim())
+    const hostname = parsed.hostname.replace(/^www\./i, '').toLowerCase()
+    if (!hostname.endsWith('twitch.tv')) return null
+    const [channel] = parsed.pathname.split('/').filter(Boolean)
+    return channel ? channel.toLowerCase() : null
+  } catch {
+    return null
+  }
+}
+
+const resolveFallbackLiveStatus = (player) => {
+  if (player?.liveStatus === 'online' || player?.live === true) return 'online'
+  return 'offline'
+}
 
 const resolveClassIcon = (name) => {
   if (!name) return null
@@ -135,6 +154,7 @@ function App() {
 
 function RankingPage() {
   const [query, setQuery] = useState('')
+  const [liveStatusByName, setLiveStatusByName] = useState({})
   const normalizedQuery = normalize(query.trim())
   const lastUpdated = playersData.lastUpdated
 
@@ -161,6 +181,46 @@ function RankingPage() {
     if (!normalizedQuery) return ranked
     return ranked.filter((player) => normalize(player.name).includes(normalizedQuery))
   }, [normalizedQuery])
+
+  useEffect(() => {
+    let isCancelled = false
+    const playersWithTwitch = (playersData.players ?? []).filter(
+      (player) => typeof player.twitch === 'string' && player.twitch.trim()
+    )
+
+    if (playersWithTwitch.length === 0) return undefined
+
+    const refreshLiveStatuses = async () => {
+      const entries = await Promise.all(
+        playersWithTwitch.map(async (player) => {
+          const channel = extractTwitchChannel(player.twitch)
+          if (!channel) return [player.name, resolveFallbackLiveStatus(player)]
+
+          try {
+            const response = await fetch(`https://decapi.me/twitch/uptime/${channel}?offline_msg=offline`)
+            if (!response.ok) return [player.name, resolveFallbackLiveStatus(player)]
+            const uptimeText = (await response.text()).trim().toLowerCase()
+            const isOnline = uptimeText && uptimeText !== 'offline' && !uptimeText.includes('could not resolve channel')
+            return [player.name, isOnline ? 'online' : 'offline']
+          } catch {
+            return [player.name, resolveFallbackLiveStatus(player)]
+          }
+        })
+      )
+
+      if (!isCancelled) {
+        setLiveStatusByName(Object.fromEntries(entries))
+      }
+    }
+
+    refreshLiveStatuses()
+    const intervalId = window.setInterval(refreshLiveStatuses, LIVE_STATUS_POLL_MS)
+
+    return () => {
+      isCancelled = true
+      window.clearInterval(intervalId)
+    }
+  }, [])
 
   return (
     <section className="page">
@@ -193,7 +253,7 @@ function RankingPage() {
           </thead>
           <tbody>
             {rankedPlayers.map((player, index) => (
-              <PlayerRow key={player.name} player={player} order={index + 1} />
+              <PlayerRow key={player.name} player={player} order={index + 1} liveStatus={liveStatusByName[player.name]} />
             ))}
           </tbody>
         </table>
@@ -202,8 +262,12 @@ function RankingPage() {
   )
 }
 
-function PlayerRow({ player, order }) {
+function PlayerRow({ player, order, liveStatus }) {
   const twitchUrl = typeof player.twitch === 'string' && player.twitch.trim() ? player.twitch.trim() : null
+  const isLive = liveStatus ? liveStatus === 'online' : player.liveStatus === 'online' || player.live === true
+  const liveLabel = isLive ? 'Online' : 'Offline'
+  const liveColor = player.liveColor === 'green' ? 'green' : 'red'
+  const liveStatusClass = isLive ? `online online-${liveColor}` : 'offline'
 
   return (
     <tr className="player-row" style={{ '--i': order }}>
@@ -228,16 +292,23 @@ function PlayerRow({ player, order }) {
         <div className="player-name-row">
           <div className="player-name">{player.name}</div>
           {twitchUrl ? (
-            <a
-              className="player-stream-link"
-              href={twitchUrl}
-              target="_blank"
-              rel="noreferrer"
-              aria-label={`Voir le stream Twitch de ${player.name}`}
-              title="Voir le stream Twitch"
-            >
-              <img src={twitchIcon} className="player-stream-icon" alt="" aria-hidden="true" />
-            </a>
+            <>
+              <a
+                className="player-stream-link"
+                href={twitchUrl}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`Voir le stream Twitch de ${player.name}`}
+                title="Voir le stream Twitch"
+              >
+                <img src={twitchIcon} className="player-stream-icon" alt="" aria-hidden="true" />
+              </a>
+              <span
+                className={`player-live-status ${liveStatusClass}`}
+                aria-label={`Stream ${liveLabel.toLowerCase()}`}
+                title={`Stream ${liveLabel}`}
+              />
+            </>
           ) : null}
         </div>
       </td>
