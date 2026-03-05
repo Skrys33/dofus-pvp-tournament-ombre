@@ -530,6 +530,7 @@ input::placeholder {
 .round-map {
   position: relative;
   display: inline-flex;
+  z-index: 49;
 }
 
 .round-map-trigger {
@@ -718,6 +719,12 @@ input::placeholder {
 }
 
 .bracket-section[data-bracket-type='losers']
+  .round-column[data-round-key='losers_grand_final']
+  .round-matches > .match-card:nth-child(odd)[data-has-outgoing='true']::before {
+  content: none;
+}
+
+.bracket-section[data-bracket-type='losers']
   .round-column[data-round-key='losers_round_1']
   .round-matches > .match-card:nth-child(odd)[data-has-outgoing='true']::before {
   top: 25%;
@@ -732,8 +739,23 @@ input::placeholder {
 }
 
 .bracket-section[data-bracket-type='losers']
+  .round-column[data-round-key='losers_round_3']
+  .round-matches > .match-card:nth-child(odd)[data-has-outgoing='true']::before {
+  top: 25%;
+  height: 20px;
+}
+
+.bracket-section[data-bracket-type='losers']
+  .round-column[data-round-key='losers_round_3']
+  .round-matches > .match-card:nth-child(even)[data-has-outgoing='true']::before {
+  top: 25%;
+  bottom: auto;
+  height: 20px;
+}
+
+.bracket-section[data-bracket-type='losers']
   .round-column[data-round-key='losers_semifinals']
-  .round-matches > .match-card:last-child[data-has-outgoing='true']::before {
+  .round-matches > .match-card:last-child:nth-child(3)[data-has-outgoing='true']::before {
   top: calc(-100% + 3px);
   bottom: auto;
   height: calc(150% - 3px);
@@ -741,7 +763,7 @@ input::placeholder {
 
 .bracket-section[data-bracket-type='losers']
   .round-column[data-round-key='losers_final']
-  .round-matches > .match-card:first-child[data-has-outgoing='true']::before {
+  .round-matches > .match-card:first-child:nth-last-child(2)[data-has-outgoing='true']::before {
   top: 25%;
   bottom: auto;
   height: 20px;
@@ -749,10 +771,18 @@ input::placeholder {
 
 .bracket-section[data-bracket-type='losers']
   .round-column[data-round-key='losers_final']
-  .round-matches > .match-card:last-child[data-has-outgoing='true']::before {
+  .round-matches > .match-card:last-child:nth-child(2)[data-has-outgoing='true']::before {
   top: calc(-150% - 13px);
   bottom: auto;
   height: calc(200% + 13px);
+}
+
+.bracket-section[data-bracket-type='losers']
+  .round-column[data-round-key='losers_final']
+  .round-matches > .match-card:nth-child(odd):only-child[data-has-outgoing='true']::before {
+  top: auto;
+  bottom: 50%;
+  height: 20px;
 }
 
 .match-card[data-highlight-outgoing='true']::after {

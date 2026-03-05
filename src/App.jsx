@@ -329,6 +329,7 @@ const formatRoundLabel = (roundKey) => {
     final: 'Final',
     losers_round_1: 'Losers Round 1',
     losers_round_2: 'Losers Round 2',
+    losers_round_3: 'Losers Round 3',
     losers_semifinals: 'Losers Semifinals',
     losers_final: 'Losers Final',
     grand_final: 'Grand Final',
@@ -349,9 +350,10 @@ const resolveOrderedRounds = (bracket) => {
     grand_final_reset: 8,
     losers_round_1: 1,
     losers_round_2: 2,
-    losers_semifinals: 3,
-    losers_final: 4,
-    losers_grand_final: 5
+    losers_round_3: 3,
+    losers_semifinals: 4,
+    losers_final: 5,
+    losers_grand_final: 6
   }
 
   return Object.entries(bracket ?? {})
@@ -383,15 +385,21 @@ const resolveRoundLayout = (roundIndex) => {
 }
 
 const resolveLayoutRoundIndex = (bracketType, roundIndex, roundKey) => {
-  let layoutRoundIndex = roundIndex
-  if (bracketType === 'losers' && roundIndex > 0) {
-    // Keep losers_round_1 and losers_round_2 aligned, then compact following rounds.
-    layoutRoundIndex = roundIndex - 1
+  if (bracketType === 'losers') {
+    const losersLayoutByRound = {
+      losers_round_1: 0,
+      losers_round_2: 0,
+      losers_round_3: 1,
+      losers_semifinals: 1,
+      losers_final: 2,
+      losers_grand_final: 2
+    }
+    if (losersLayoutByRound[roundKey] !== undefined) {
+      return losersLayoutByRound[roundKey]
+    }
+    if (roundIndex > 0) return roundIndex - 1
   }
-  if (roundKey === 'losers_grand_final' && layoutRoundIndex > 0) {
-    layoutRoundIndex -= 1
-  }
-  return layoutRoundIndex
+  return roundIndex
 }
 
 const resolveTeamScores = (score) => {
@@ -477,7 +485,7 @@ function MatchCard({
     <article
       className="match-card"
       data-round-index={roundIndex}
-      data-has-outgoing={hasNextRound && Boolean(match.winner) ? 'true' : 'false'}
+      data-has-outgoing={hasNextRound || roundKey === 'losers_grand_final' ? 'true' : 'false'}
       data-highlight-top={topHighlighted ? 'true' : 'false'}
       data-highlight-bottom={bottomHighlighted ? 'true' : 'false'}
       data-highlight-outgoing={outgoingHighlighted ? 'true' : 'false'}
@@ -524,7 +532,9 @@ function BracketTree({
 
   const resolveIncomingLink = (roundIndex, previousRoundWinners, teamName, incomingOverride) => {
     if (typeof incomingOverride === 'boolean') return incomingOverride
-    if (roundIndex === 0 || !teamName) return false
+    if (roundIndex === 0) return false
+    if (!teamName) return previousRoundWinners.size === 0
+    if (previousRoundWinners.size === 0) return true
     return previousRoundWinners.has(teamName)
   }
 
@@ -638,6 +648,9 @@ function BracketTree({
                         bracketType === 'losers' &&
                         Boolean(match.teamB) &&
                         losersFirstAppearanceByTeam.get(match.teamB) === roundIndex
+                      const allowBottomIncomingInLosers =
+                        round.key === 'losers_final' ||
+                        (round.key === 'losers_round_3' && match.id !== 'losers_round_3-m2')
 
                       return (
                     <MatchCard
@@ -645,7 +658,11 @@ function BracketTree({
                       match={match}
                       playersByName={playersByName}
                       hasIncomingTopLink={!isTopFirstLosersAppearance && hasIncomingTopLink}
-                      hasIncomingBottomLink={!isBottomFirstLosersAppearance && hasIncomingBottomLink}
+                      hasIncomingBottomLink={
+                        bracketType === 'losers'
+                          ? allowBottomIncomingInLosers && !isBottomFirstLosersAppearance && hasIncomingBottomLink
+                          : !isBottomFirstLosersAppearance && hasIncomingBottomLink
+                      }
                       hasCrossBracketIncomingTop={topCrossBracketIncomingFromGrandFinal}
                       hasCrossBracketIncomingBottom={bottomCrossBracketIncomingFromGrandFinal}
                       roundIndex={roundIndex}

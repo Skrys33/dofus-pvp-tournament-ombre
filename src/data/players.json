@@ -154,6 +154,10 @@
         "map": 45,
         "day": "Vendredi 06/03/2026"
       },
+      "losers_round_3": {
+        "map": 35,
+        "day": "Vendredi 06/03/2026"
+      },
       "losers_semifinals": {
         "map": 35,
         "day": "Samedi 07/03/2026"
@@ -333,13 +337,6 @@
           "teamB": null,
           "winner": null,
           "score": null
-        },
-        {
-          "id": "losers_round_1-m4",
-          "teamA": null,
-          "teamB": null,
-          "winner": null,
-          "score": null
         }
       ],
       "losers_round_2": [
@@ -363,9 +360,18 @@
           "teamB": null,
           "winner": null,
           "score": null
+        }
+      ],
+      "losers_round_3": [
+        {
+          "id": "losers_round_3-m1",
+          "teamA": null,
+          "teamB": null,
+          "winner": null,
+          "score": null
         },
         {
-          "id": "losers_round_2-m4",
+          "id": "losers_round_3-m2",
           "teamA": null,
           "teamB": null,
           "winner": null,
@@ -386,25 +392,11 @@
           "teamB": null,
           "winner": null,
           "score": null
-        },
-        {
-          "id": "losers_semifinals-m3",
-          "teamA": null,
-          "teamB": null,
-          "winner": null,
-          "score": null
         }
       ],
       "losers_final": [
         {
           "id": "losers_final-m1",
-          "teamA": null,
-          "teamB": null,
-          "winner": null,
-          "score": null
-        },
-        {
-          "id": "losers_final-m2",
           "teamA": null,
           "teamB": null,
           "winner": null,
