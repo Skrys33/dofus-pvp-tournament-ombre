@@ -755,8 +755,7 @@ function BracketTree({
                         Boolean(match.teamB) &&
                         losersFirstAppearanceByTeam.get(match.teamB) === roundIndex
                       const allowBottomIncomingInLosers =
-                        round.key === 'losers_final' ||
-                        (round.key === 'losers_round_3' && match.id !== 'losers_round_3-m2')
+                        round.key === 'losers_final' || round.key === 'losers_round_3'
 
                       return (
                     <MatchCard

@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-05 17:48",
+  "lastUpdated": "2026-03-06 22:46",
   "players": [
     {
       "name": "Skrys",
@@ -76,7 +76,7 @@
       ]
     },
     {
-      "name": "Kizu",
+      "name": "Kizu & Frifri",
       "classes": [
         "Sacri",
         "Iop"
@@ -182,7 +182,7 @@
       "Shangai & Ryk",
       "New-Ra-Qu",
       "Fifi & Restimon",
-      "Kizu",
+      "Kizu & Frifri",
       "Aplesi",
       "Laawd & Dujduj",
       "Kasta & Chippeuh",
@@ -213,94 +213,94 @@
           "id": "round_of_16-m2",
           "teamA": "Aplesi",
           "teamB": "Gensa",
-          "winner": null,
-          "score": null
+          "winner": "Gensa",
+          "score": "0-1"
         },
         {
           "id": "round_of_16-m3",
           "teamA": "Nde",
           "teamB": "Myny & Agi",
-          "winner": null,
-          "score": null
+          "winner": "Nde",
+          "score": "1-0"
         },
         {
           "id": "round_of_16-m4",
           "teamA": "Cpt-Morgn",
           "teamB": "Heizo & Millax",
-          "winner": null,
-          "score": null
+          "winner": "Heizo & Millax",
+          "score": "0-1"
         },
         {
           "id": "round_of_16-m5",
           "teamA": "Skrys",
           "teamB": "New-Ra-Qu",
-          "winner": null,
-          "score": null
+          "winner": "Skrys",
+          "score": "1-0"
         },
         {
           "id": "round_of_16-m6",
           "teamA": "Fifi & Restimon",
           "teamB": "Ino & Hof",
-          "winner": null,
-          "score": null
+          "winner": "Ino & Hof",
+          "score": "0-1"
         },
         {
           "id": "round_of_16-m7",
           "teamA": "Laawd & Dujduj",
-          "teamB": "Kizu",
-          "winner": null,
-          "score": null
+          "teamB": "Kizu & Frifri",
+          "winner": "Kizu & Frifri",
+          "score": "0-1"
         },
         {
           "id": "round_of_16-m8",
           "teamA": "Cosette & Drift",
           "teamB": "Kasta & Chippeuh",
-          "winner": null,
-          "score": null
+          "winner": "Kasta & Chippeuh",
+          "score": "0-1"
         }
       ],
       "quarterfinals": [
         {
           "id": "quarterfinals-m1",
           "teamA": "Shangai & Ryk",
-          "teamB": null,
+          "teamB": "Gensa",
           "winner": null,
           "score": null
         },
         {
           "id": "quarterfinals-m2",
-          "teamA": null,
-          "teamB": null,
-          "winner": null,
-          "score": null
+          "teamA": "Nde",
+          "teamB": "Heizo & Millax",
+          "winner": "Nde",
+          "score": "1-0"
         },
         {
           "id": "quarterfinals-m3",
-          "teamA": null,
-          "teamB": null,
-          "winner": null,
-          "score": null
+          "teamA": "Skrys",
+          "teamB": "Ino & Hof",
+          "winner": "Ino & Hof",
+          "score": "0-1"
         },
         {
           "id": "quarterfinals-m4",
-          "teamA": null,
-          "teamB": null,
-          "winner": null,
-          "score": null
+          "teamA": "Kizu & Frifri",
+          "teamB": "Kasta & Chippeuh",
+          "winner": "Kasta & Chippeuh",
+          "score": "0-1"
         }
       ],
       "semifinals": [
         {
           "id": "semifinals-m1",
           "teamA": null,
-          "teamB": null,
+          "teamB": "Nde",
           "winner": null,
           "score": null
         },
         {
           "id": "semifinals-m2",
-          "teamA": null,
-          "teamB": null,
+          "teamA": "Ino & Hof",
+          "teamB": "Kasta & Chippeuh",
           "winner": null,
           "score": null
         }
@@ -320,43 +320,57 @@
         {
           "id": "losers_round_1-m1",
           "teamA": "Rouxcarnage & Christ",
-          "teamB": null,
-          "winner": null,
-          "score": null
+          "teamB": "Aplesi",
+          "winner": "Rouxcarnage & Christ",
+          "score": "1-0"
         },
         {
           "id": "losers_round_1-m2",
-          "teamA": null,
-          "teamB": null,
-          "winner": null,
-          "score": null
+          "teamA": "Myny & Agi",
+          "teamB": "Cpt-Morgn",
+          "winner": "Myny & Agi",
+          "score": "1-0"
         },
         {
           "id": "losers_round_1-m3",
-          "teamA": null,
-          "teamB": null,
-          "winner": null,
-          "score": null
+          "teamA": "New-Ra-Qu",
+          "teamB": "Fifi & Restimon",
+          "winner": "Fifi & Restimon",
+          "score": "0-1"
+        },
+        {
+          "id": "losers_round_1-m43",
+          "teamA": "Laawd & Dujduj",
+          "teamB": "Cosette & Drift",
+          "winner": "Cosette & Drift",
+          "score": "0-1"
         }
       ],
       "losers_round_2": [
         {
           "id": "losers_round_2-m1",
-          "teamA": null,
-          "teamB": null,
+          "teamA": "Rouxcarnage & Christ",
+          "teamB": "Kizu & Frifri",
           "winner": null,
           "score": null
         },
         {
           "id": "losers_round_2-m2",
-          "teamA": null,
-          "teamB": null,
-          "winner": null,
-          "score": null
+          "teamA": "Myny & Agi",
+          "teamB": "Skrys",
+          "winner": "Myny & Agi",
+          "score": "1-0"
         },
         {
           "id": "losers_round_2-m3",
-          "teamA": null,
+          "teamA": "Fifi & Restimon",
+          "teamB": "Heizo & Millax",
+          "winner": "Fifi & Restimon",
+          "score": "1-0"
+        },
+        {
+          "id": "losers_round_2-m4",
+          "teamA": "Cosette & Drift",
           "teamB": null,
           "winner": null,
           "score": null
@@ -366,13 +380,13 @@
         {
           "id": "losers_round_3-m1",
           "teamA": null,
-          "teamB": null,
+          "teamB": "Myny & Agi",
           "winner": null,
           "score": null
         },
         {
           "id": "losers_round_3-m2",
-          "teamA": null,
+          "teamA": "Fifi & Restimon",
           "teamB": null,
           "winner": null,
           "score": null
