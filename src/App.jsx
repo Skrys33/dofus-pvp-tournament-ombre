@@ -3,6 +3,12 @@ import { NavLink, Route, Routes } from 'react-router-dom'
 import playersData from './data/players.json'
 import backgroundVideo from './assets/background.mp4'
 import twitchIcon from './assets/twitch-tile.svg'
+import anthoStreamerImage from './assets/streamers/antho.png'
+import sigielStreamerImage from './assets/streamers/sigiel.png'
+import skrysStreamerImage from './assets/streamers/skrys.png'
+import apelsiStreamerImage from './assets/streamers/aplesi.png'
+import cptStreamerImage from './assets/streamers/cpt_morgn_ily.png'
+import spongitoStreamerImage from './assets/streamers/spongito.png'
 import './App.css'
 
 const classIcons = import.meta.glob('./assets/classes/*.png', { eager: true, import: 'default' })
@@ -88,6 +94,14 @@ const classKeyMap = {
 const normalize = (value) => value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
 const normalizeKey = (value) => value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
 const LIVE_STATUS_POLL_MS = 120000
+const STREAMERS = [
+  { name: 'Sigielll', twitch: 'https://twitch.tv/sigielll', image: sigielStreamerImage },
+  { name: 'Antho le Sudiste', twitch: 'https://twitch.tv/antho_le_sudiste', image: anthoStreamerImage },
+  { name: 'Skryss_', twitch: 'https://www.twitch.tv/skryss_', image: skrysStreamerImage },
+  { name: 'Cpt Morgn Ily', twitch: 'https://www.twitch.tv/cpt_morgn_ily', image: cptStreamerImage },
+  { name: 'Apelsi', twitch: 'https://www.twitch.tv/aplesi', image: apelsiStreamerImage },
+  { name: 'Spongito', twitch: 'https://www.twitch.tv/spongito_dofus', image: spongitoStreamerImage },
+]
 
 const extractTwitchChannel = (url) => {
   if (typeof url !== 'string' || !url.trim()) return null
@@ -175,6 +189,10 @@ function RankingPage() {
   const [liveStatusByName, setLiveStatusByName] = useState({})
   const normalizedQuery = normalize(query.trim())
   const lastUpdated = playersData.lastUpdated
+  const streamersWithStatus = STREAMERS.map((streamer) => ({
+    ...streamer,
+    liveStatus: liveStatusByName[streamer.name] ?? 'offline'
+  }))
 
   const rankedPlayers = useMemo(() => {
     const pointsByName = resolvePlayerPoints(playersData.players, playersData.tournament)
@@ -202,26 +220,26 @@ function RankingPage() {
 
   useEffect(() => {
     let isCancelled = false
-    const playersWithTwitch = (playersData.players ?? []).filter(
-      (player) => typeof player.twitch === 'string' && player.twitch.trim()
+    const accountsWithTwitch = [...(playersData.players ?? []), ...STREAMERS].filter(
+      (account) => typeof account.twitch === 'string' && account.twitch.trim()
     )
 
-    if (playersWithTwitch.length === 0) return undefined
+    if (accountsWithTwitch.length === 0) return undefined
 
     const refreshLiveStatuses = async () => {
       const entries = await Promise.all(
-        playersWithTwitch.map(async (player) => {
-          const channel = extractTwitchChannel(player.twitch)
-          if (!channel) return [player.name, resolveFallbackLiveStatus(player)]
+        accountsWithTwitch.map(async (account) => {
+          const channel = extractTwitchChannel(account.twitch)
+          if (!channel) return [account.name, resolveFallbackLiveStatus(account)]
 
           try {
             const response = await fetch(`https://decapi.me/twitch/uptime/${channel}?offline_msg=offline`)
-            if (!response.ok) return [player.name, resolveFallbackLiveStatus(player)]
+            if (!response.ok) return [account.name, resolveFallbackLiveStatus(account)]
             const uptimeText = (await response.text()).trim().toLowerCase()
             const isOnline = uptimeText && uptimeText !== 'offline' && !uptimeText.includes('could not resolve channel')
-            return [player.name, isOnline ? 'online' : 'offline']
+            return [account.name, isOnline ? 'online' : 'offline']
           } catch {
-            return [player.name, resolveFallbackLiveStatus(player)]
+            return [account.name, resolveFallbackLiveStatus(account)]
           }
         })
       )
@@ -259,6 +277,8 @@ function RankingPage() {
         </div>
       </div>
 
+      <StreamersSpotlight streamers={streamersWithStatus} />
+
       <div className="ranking-table">
         <table>
           <thead>
@@ -277,6 +297,44 @@ function RankingPage() {
         </table>
       </div>
     </section>
+  )
+}
+
+function StreamersSpotlight({ streamers }) {
+  if (!Array.isArray(streamers) || streamers.length === 0) return null
+
+  return (
+    <aside className="streamers-highlight" aria-label="Streamers qui couvrent l'evenement">
+      <p className="streamers-title">Streamers</p>
+      <div className="streamers-list">
+        {streamers.map((streamer) => {
+          const isLive = streamer.liveStatus === 'online'
+          const liveLabel = isLive ? 'Online' : 'Offline'
+          const liveStatusClass = isLive ? 'online online-green' : 'offline'
+
+          return (
+            <a
+              key={streamer.name}
+              className="streamer-card"
+              href={streamer.twitch}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`Voir le stream Twitch de ${streamer.name}`}
+              title={`Voir le stream Twitch de ${streamer.name}`}
+            >
+              <img className="streamer-avatar" src={streamer.image} alt={`Photo de ${streamer.name}`} />
+              <img src={twitchIcon} className="player-stream-icon" alt="" aria-hidden="true" />
+              <span className="streamer-name">{streamer.name}</span>
+              <span
+                className={`player-live-status ${liveStatusClass}`}
+                aria-label={`Stream ${liveLabel.toLowerCase()}`}
+                title={`Stream ${liveLabel}`}
+              />
+            </a>
+          )
+        })}
+      </div>
+    </aside>
   )
 }
 
