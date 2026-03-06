@@ -147,76 +147,11 @@ const resolvePlayerPoints = (players, tournament) => {
 
 function App() {
   const participantCount = Array.isArray(playersData.players) ? playersData.players.length : 0
-
-  return (
-    <div className="app">
-      <div className="video-bg" aria-hidden="true">
-        <video autoPlay loop muted playsInline>
-          <source src={backgroundVideo} type="video/mp4" />
-        </video>
-        <div className="video-overlay" />
-      </div>
-      <header className="hero">
-        <div>
-          <p className="eyebrow">Dofus - Tournoi Ombre - PvP 2v2</p>
-          <h1>Classement des joueurs</h1>
-          <p className="subtitle">
-            Edition III - {participantCount} participants. <br />1 point pour une victoire, 0 pour une defaite.
-          </p>
-        </div>
-        <nav className="nav">
-          <NavLink to="/" end>
-            Classement
-          </NavLink>
-          <NavLink to="/bracket">Bracket</NavLink>
-          <NavLink to="/rules">Regles</NavLink>
-        </nav>
-      </header>
-      <main>
-        <Routes>
-          <Route path="/" element={<RankingPage />} />
-          <Route path="/bracket" element={<BracketPage />} />
-          <Route path="/rules" element={<RulesPage />} />
-        </Routes>
-      </main>
-      <footer className="footer">Developed by Skrys.</footer>
-    </div>
-  )
-}
-
-function RankingPage() {
-  const [query, setQuery] = useState('')
   const [liveStatusByName, setLiveStatusByName] = useState({})
-  const normalizedQuery = normalize(query.trim())
-  const lastUpdated = playersData.lastUpdated
   const streamersWithStatus = STREAMERS.map((streamer) => ({
     ...streamer,
     liveStatus: liveStatusByName[streamer.name] ?? 'offline'
   }))
-
-  const rankedPlayers = useMemo(() => {
-    const pointsByName = resolvePlayerPoints(playersData.players, playersData.tournament)
-    const list = playersData.players
-      .map((player) => ({ ...player, points: pointsByName.get(player.name) ?? 0 }))
-      .sort((a, b) => {
-        if (b.points !== a.points) return b.points - a.points
-        return a.name.localeCompare(b.name)
-      })
-
-    let previousPoints = null
-    let currentRank = 0
-
-    const ranked = list.map((player, index) => {
-      if (player.points !== previousPoints) {
-        currentRank = index + 1
-        previousPoints = player.points
-      }
-      return { ...player, rank: currentRank }
-    })
-
-    if (!normalizedQuery) return ranked
-    return ranked.filter((player) => normalize(player.name).includes(normalizedQuery))
-  }, [normalizedQuery])
 
   useEffect(() => {
     let isCancelled = false
@@ -259,6 +194,74 @@ function RankingPage() {
   }, [])
 
   return (
+    <div className="app">
+      <div className="video-bg" aria-hidden="true">
+        <video autoPlay loop muted playsInline>
+          <source src={backgroundVideo} type="video/mp4" />
+        </video>
+        <div className="video-overlay" />
+      </div>
+      <header className="hero">
+        <div className='eyebrow-div'>
+          <p className="eyebrow">Dofus - Tournoi Ombre - PvP 2v2</p>
+          <StreamersSpotlight streamers={streamersWithStatus} />
+        </div>
+        <div>
+          <h1>Classement des joueurs</h1>
+          <p className="subtitle">
+            Edition III - {participantCount} participants. <br />1 point pour une victoire, 0 pour une defaite.
+          </p>
+        </div>
+        <nav className="nav">
+          <NavLink to="/" end>
+            Classement
+          </NavLink>
+          <NavLink to="/bracket">Bracket</NavLink>
+          <NavLink to="/rules">Regles</NavLink>
+        </nav>
+      </header>
+      <main>
+        <Routes>
+          <Route path="/" element={<RankingPage liveStatusByName={liveStatusByName} />} />
+          <Route path="/bracket" element={<BracketPage />} />
+          <Route path="/rules" element={<RulesPage />} />
+        </Routes>
+      </main>
+      <footer className="footer">Developed by Skrys.</footer>
+    </div>
+  )
+}
+
+function RankingPage({ liveStatusByName }) {
+  const [query, setQuery] = useState('')
+  const normalizedQuery = normalize(query.trim())
+  const lastUpdated = playersData.lastUpdated
+
+  const rankedPlayers = useMemo(() => {
+    const pointsByName = resolvePlayerPoints(playersData.players, playersData.tournament)
+    const list = playersData.players
+      .map((player) => ({ ...player, points: pointsByName.get(player.name) ?? 0 }))
+      .sort((a, b) => {
+        if (b.points !== a.points) return b.points - a.points
+        return a.name.localeCompare(b.name)
+      })
+
+    let previousPoints = null
+    let currentRank = 0
+
+    const ranked = list.map((player, index) => {
+      if (player.points !== previousPoints) {
+        currentRank = index + 1
+        previousPoints = player.points
+      }
+      return { ...player, rank: currentRank }
+    })
+
+    if (!normalizedQuery) return ranked
+    return ranked.filter((player) => normalize(player.name).includes(normalizedQuery))
+  }, [normalizedQuery])
+
+  return (
     <section className="page">
       <div className="section-header">
         <div>
@@ -276,8 +279,6 @@ function RankingPage() {
           />
         </div>
       </div>
-
-      <StreamersSpotlight streamers={streamersWithStatus} />
 
       <div className="ranking-table">
         <table>
@@ -301,12 +302,33 @@ function RankingPage() {
 }
 
 function StreamersSpotlight({ streamers }) {
+  const [isOpen, setIsOpen] = useState(false)
+  const contentId = 'streamers-overlay-panel'
   if (!Array.isArray(streamers) || streamers.length === 0) return null
 
   return (
-    <aside className="streamers-highlight" aria-label="Streamers qui couvrent l'evenement">
-      <p className="streamers-title">Streamers</p>
-      <div className="streamers-list">
+    <aside className={`streamers-highlight ${isOpen ? 'is-open' : ''}`} aria-label="Streamers qui couvrent l'evenement">
+      <button
+        type="button"
+        className="streamers-toggle"
+        onClick={() => setIsOpen((prev) => !prev)}
+        aria-expanded={isOpen}
+        aria-controls={contentId}
+      >
+        <span className="streamers-title-row">
+          <span className="streamers-title">Streamers</span>          
+          <a
+            className="player-stream-link"
+            target="_blank"
+            rel="noreferrer"
+            title="Voir les streamers"
+          >
+            <img src={twitchIcon} className="player-stream-icon" alt="" aria-hidden="true" />
+          </a>
+        </span>
+      </button>
+      <div id={contentId} className={`streamers-panel ${isOpen ? 'is-open' : ''}`}>
+        <div className="streamers-list">
         {streamers.map((streamer) => {
           const isLive = streamer.liveStatus === 'online'
           const liveLabel = isLive ? 'Online' : 'Offline'
@@ -323,7 +345,6 @@ function StreamersSpotlight({ streamers }) {
               title={`Voir le stream Twitch de ${streamer.name}`}
             >
               <img className="streamer-avatar" src={streamer.image} alt={`Photo de ${streamer.name}`} />
-              <img src={twitchIcon} className="player-stream-icon" alt="" aria-hidden="true" />
               <span className="streamer-name">{streamer.name}</span>
               <span
                 className={`player-live-status ${liveStatusClass}`}
@@ -333,6 +354,7 @@ function StreamersSpotlight({ streamers }) {
             </a>
           )
         })}
+        </div>
       </div>
     </aside>
   )

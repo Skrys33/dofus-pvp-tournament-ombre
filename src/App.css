@@ -58,14 +58,18 @@ main,
 }
 
 .hero {
+  z-index: 120;
+}
+
+.hero {
   display: flex;
   flex-wrap: wrap;
-  gap: 24px;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 36px;
   animation: fadeUp 0.8s ease both;
 }
+
 
 .hero h1 {
   font-size: clamp(2.4rem, 4vw, 3.6rem);
@@ -81,6 +85,13 @@ main,
   font-weight: bold;
 }
 
+.eyebrow-div {
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .subtitle {
   max-width: 560px;
   font-size: 1.05rem;
@@ -93,14 +104,15 @@ main,
   gap: 16px;
   background: rgba(10, 10, 16, 0.6);
   padding: 8px;
-  border-radius: 999px;
+  border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   backdrop-filter: blur(12px);
+  margin-top:1rem;
 }
 
 .nav a {
   padding: 10px 18px;
-  border-radius: 999px;
+  border-radius: 8px;
   font-weight: 600;
   color: var(--ink);
   transition: all 0.2s ease;
@@ -160,7 +172,7 @@ main,
 }
 
 .search input {
-  border-radius: 16px;
+  border-radius: 12px;
   padding: 12px 16px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   background: rgba(10, 10, 16);
@@ -173,21 +185,94 @@ input::placeholder {
   opacity: 0.8;
 }
 
+.hero-action {
+  gap: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+}
+
 .streamers-highlight {
-  background: rgba(10, 10, 16, 0.82);
-  border-radius: 18px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  padding: 14px 16px;
-  animation: fadeUp 0.65s ease both;
+  position: relative;
+  z-index: 220;
 }
 
 .streamers-title {
-  margin: 0 0 10px;
+  margin: 0;
   font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--muted);
   font-weight: 700;
+}
+
+.streamers-title-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.streamers-title-icon {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.streamers-toggle {
+  width: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 140px;
+  padding: 9px 14px;
+  margin: 0;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 12px;
+  background: rgba(10, 10, 16, 0.82);
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+
+.streamers-toggle:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.36);
+  background: rgba(16, 16, 24, 0.95);
+}
+
+.streamers-toggle:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.75);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+.streamers-panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 260;
+  max-width: 1200px;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(10, 10, 16, 0.96);
+  box-shadow: 0 24px 55px rgba(2, 2, 6, 0.6);
+  padding: 0 16px;
+  transform: translateY(-6px);
+  transition: max-height 0.35s ease, opacity 0.2s ease, transform 0.2s ease, padding 0.2s ease;
+}
+
+.streamers-panel.is-open {
+  max-height: 420px;
+  min-width: 250PX;
+  opacity: 1;
+  pointer-events: auto;
+  padding: 16px;
+  transform: translateY(0);
 }
 
 .streamers-list {
@@ -226,17 +311,29 @@ input::placeholder {
 .streamer-avatar {
   width: 28px;
   height: 28px;
-  border-radius: 999px;
+  border-radius: 12px;
   object-fit: cover;
   border: 1px solid rgba(255, 255, 255, 0.24);
   flex-shrink: 0;
+}
+
+@media (max-width: 900px) {
+  .streamers-toggle {
+    width: 100%;
+  }
+
+  .streamers-panel {
+    right: 0;
+    width: 100%;
+    max-width: none;
+  }
 }
 
 .ranking-table {
   width: 100%;
   overflow-x: auto;
   background: rgba(10, 10, 16);
-  border-radius: 24px;
+  border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow: 0 20px 50px rgba(5, 5, 10, 0.5);
   animation: fadeUp 0.7s ease both;
@@ -384,7 +481,7 @@ input::placeholder {
 .player-live-status {
   width: 10px;
   height: 10px;
-  border-radius: 999px;
+  border-radius: 12px;
   display: inline-block;
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.28);
 }
@@ -727,7 +824,7 @@ input::placeholder {
   right: 8px;
   width: 30px;
   height: 30px;
-  border-radius: 999px;
+  border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.35);
   background: rgba(10, 10, 16, 0.75);
   color: var(--ink);
@@ -1031,7 +1128,7 @@ input::placeholder {
   margin-left: 8px;
   margin-right: 12px;
   padding: 1px 6px;
-  border-radius: 999px;
+  border-radius: 12px;
   font-size: 0.74rem;
   font-weight: 800;
   color: var(--ink-soft);
@@ -1046,7 +1143,7 @@ input::placeholder {
   width: min(780px, 100%);
   background: rgba(10, 10, 16, 0.85);
   padding: 28px;
-  border-radius: 24px;
+  border-radius: 12px;
   box-shadow: 0 24px 50px rgba(5, 5, 10, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.12);
   animation: fadeUp 0.7s ease both;
