@@ -746,6 +746,8 @@ function BracketTree({
                       ) || bottomCrossBracketIncomingFromGrandFinal || bottomIncomingFromOutsideLosersRound
                       const forceIncomingInWinnersQuarterfinals =
                         bracketType === 'winners' && round.key === 'quarterfinals'
+                      const forceIncomingTopInLosersSemifinals =
+                        bracketType === 'losers' && round.key === 'losers_semifinals'
                       const isTopFirstLosersAppearance =
                         bracketType === 'losers' &&
                         Boolean(match.teamA) &&
@@ -755,7 +757,8 @@ function BracketTree({
                         Boolean(match.teamB) &&
                         losersFirstAppearanceByTeam.get(match.teamB) === roundIndex
                       const allowBottomIncomingInLosers =
-                        round.key === 'losers_final' || round.key === 'losers_round_3'
+                        round.key === 'losers_final' ||
+                        round.key === 'losers_round_3'
 
                       return (
                     <MatchCard
@@ -763,7 +766,9 @@ function BracketTree({
                       match={match}
                       playersByName={playersByName}
                       hasIncomingTopLink={
-                        !isTopFirstLosersAppearance && (hasIncomingTopLink || forceIncomingInWinnersQuarterfinals)
+                        forceIncomingTopInLosersSemifinals ||
+                        (!isTopFirstLosersAppearance &&
+                          (hasIncomingTopLink || forceIncomingInWinnersQuarterfinals))
                       }
                       hasIncomingBottomLink={
                         bracketType === 'losers'

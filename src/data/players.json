@@ -164,7 +164,7 @@
       },
       "losers_final": {
         "map": 21,
-        "day": "Samedi 07/03/2026"
+        "day": "Dimanche 08/03/2026"
       },
       "losers_grand_final": {
         "map": 38,
@@ -264,8 +264,8 @@
           "id": "quarterfinals-m1",
           "teamA": "Shangai & Ryk",
           "teamB": "Gensa",
-          "winner": null,
-          "score": null
+          "winner": "Shangai & Ryk",
+          "score": "1-0"
         },
         {
           "id": "quarterfinals-m2",
@@ -292,24 +292,24 @@
       "semifinals": [
         {
           "id": "semifinals-m1",
-          "teamA": null,
+          "teamA": "Shangai & Ryk",
           "teamB": "Nde",
-          "winner": null,
-          "score": null
+          "winner": "Nde",
+          "score": "0-1"
         },
         {
           "id": "semifinals-m2",
           "teamA": "Ino & Hof",
           "teamB": "Kasta & Chippeuh",
-          "winner": null,
-          "score": null
+          "winner": "Ino & Hof",
+          "score": "1-0"
         }
       ],
       "final": [
         {
           "id": "final-m1",
-          "teamA": null,
-          "teamB": null,
+          "teamA": "Nde",
+          "teamB": "Ino & Hof",
           "winner": null,
           "score": null
         }
@@ -351,8 +351,8 @@
           "id": "losers_round_2-m1",
           "teamA": "Rouxcarnage & Christ",
           "teamB": "Kizu & Frifri",
-          "winner": null,
-          "score": null
+          "winner": "Rouxcarnage & Christ",
+          "score": "1-0"
         },
         {
           "id": "losers_round_2-m2",
@@ -371,48 +371,48 @@
         {
           "id": "losers_round_2-m4",
           "teamA": "Cosette & Drift",
-          "teamB": null,
-          "winner": null,
-          "score": null
+          "teamB":  "Gensa",
+          "winner": "Gensa",
+          "score": "0-1"
         }
       ],
       "losers_round_3": [
         {
           "id": "losers_round_3-m1",
-          "teamA": null,
+          "teamA": "Rouxcarnage & Christ",
           "teamB": "Myny & Agi",
-          "winner": null,
-          "score": null
+          "winner": "Myny & Agi",
+          "score": "0-1"
         },
         {
           "id": "losers_round_3-m2",
           "teamA": "Fifi & Restimon",
-          "teamB": null,
-          "winner": null,
-          "score": null
+          "teamB": "Gensa",
+          "winner": "Gensa",
+          "score": "0-1"
         }
       ],
       "losers_semifinals": [
         {
           "id": "losers_semifinals-m1",
-          "teamA": null,
-          "teamB": null,
-          "winner": null,
-          "score": null
+          "teamA": "Shangai & Ryk",
+          "teamB": "Myny & Agi",
+          "winner": "Shangai & Ryk",
+          "score": "1-0"
         },
         {
           "id": "losers_semifinals-m2",
-          "teamA": null,
-          "teamB": null,
-          "winner": null,
-          "score": null
+          "teamA": "Kasta & Chippeuh",
+          "teamB": "Gensa",
+          "winner": "Kasta & Chippeuh",
+          "score": "1-0"
         }
       ],
       "losers_final": [
         {
           "id": "losers_final-m1",
-          "teamA": null,
-          "teamB": null,
+          "teamA": "Shangai & Ryk",
+          "teamB": "Kasta & Chippeuh",
           "winner": null,
           "score": null
         }
