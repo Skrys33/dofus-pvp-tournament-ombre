@@ -145,6 +145,25 @@ const resolvePlayerPoints = (players, tournament) => {
   return pointsByName
 }
 
+const resolveWinnerBracketWins = (players, tournament) => {
+  const playerNames = new Set(players.map((player) => player.name))
+  const winsByName = new Map(players.map((player) => [player.name, 0]))
+  const winnerRounds = Object.values(tournament?.bracket ?? {})
+  const grandFinalCollections = [tournament?.grand_final, tournament?.grand_final_reset, tournament?.grandFinal]
+  const allMatches = [...winnerRounds, ...grandFinalCollections]
+
+  for (const matches of allMatches) {
+    if (!Array.isArray(matches)) continue
+    for (const match of matches) {
+      const winner = match?.winner
+      if (!playerNames.has(winner)) continue
+      winsByName.set(winner, (winsByName.get(winner) ?? 0) + 1)
+    }
+  }
+
+  return winsByName
+}
+
 function App() {
   const participantCount = Array.isArray(playersData.players) ? playersData.players.length : 0
   const [liveStatusByName, setLiveStatusByName] = useState({})
@@ -239,20 +258,28 @@ function RankingPage({ liveStatusByName }) {
 
   const rankedPlayers = useMemo(() => {
     const pointsByName = resolvePlayerPoints(playersData.players, playersData.tournament)
+    const winnerBracketWinsByName = resolveWinnerBracketWins(playersData.players, playersData.tournament)
     const list = playersData.players
-      .map((player) => ({ ...player, points: pointsByName.get(player.name) ?? 0 }))
+      .map((player) => ({
+        ...player,
+        points: pointsByName.get(player.name) ?? 0,
+        winnerBracketWins: winnerBracketWinsByName.get(player.name) ?? 0
+      }))
       .sort((a, b) => {
         if (b.points !== a.points) return b.points - a.points
+        if (b.winnerBracketWins !== a.winnerBracketWins) return b.winnerBracketWins - a.winnerBracketWins
         return a.name.localeCompare(b.name)
       })
 
     let previousPoints = null
+    let previousWinnerBracketWins = null
     let currentRank = 0
 
     const ranked = list.map((player, index) => {
-      if (player.points !== previousPoints) {
+      if (player.points !== previousPoints || player.winnerBracketWins !== previousWinnerBracketWins) {
         currentRank = index + 1
         previousPoints = player.points
+        previousWinnerBracketWins = player.winnerBracketWins
       }
       return { ...player, rank: currentRank }
     })
@@ -288,6 +315,7 @@ function RankingPage({ liveStatusByName }) {
               <th className="col-classes">Classes</th>
               <th className="col-player">Joueur</th>
               <th className="col-points">Points</th>
+              <th className="col-winner-wins" title='Victoires Winner Bracket'>Points WB</th>
             </tr>
           </thead>
           <tbody>
@@ -411,6 +439,7 @@ function PlayerRow({ player, order, liveStatus }) {
         </div>
       </td>
       <td className="cell-points">{player.points}</td>
+      <td className="cell-winner-wins">{player.winnerBracketWins}</td>
     </tr>
   )
 }

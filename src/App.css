@@ -373,7 +373,12 @@ input::placeholder {
 
 .col-points {
   width: 100px;
-  text-align: center;
+  text-align: center!important;
+}
+
+.col-winner-wins {
+  width: 130px;
+  text-align: center!important;
 }
 
 .col-boss {
@@ -426,6 +431,12 @@ input::placeholder {
 }
 
 .cell-points {
+  text-align: center;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.cell-winner-wins {
   text-align: center;
   font-weight: 700;
   font-size: 1.05rem;

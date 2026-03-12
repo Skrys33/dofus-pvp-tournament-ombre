@@ -194,10 +194,10 @@
     "grand_final": [
       {
         "id": "grand_final-m1",
-        "teamA": null,
-        "teamB": null,
-        "winner": null,
-        "score": null
+        "teamA": "Nde",
+        "teamB": "Shangai & Ryk",
+        "winner": "Shangai & Ryk",
+        "score": "0-2"
       }
     ],
     "bracket": {
@@ -310,8 +310,8 @@
           "id": "final-m1",
           "teamA": "Nde",
           "teamB": "Ino & Hof",
-          "winner": null,
-          "score": null
+          "winner": "Nde",
+          "score": "1-0"
         }
       ]
     },
@@ -413,17 +413,17 @@
           "id": "losers_final-m1",
           "teamA": "Shangai & Ryk",
           "teamB": "Kasta & Chippeuh",
-          "winner": null,
-          "score": null
+          "winner": "Shangai & Ryk",
+          "score": "1-0"
         }
       ],
       "losers_grand_final": [
         {
           "id": "losers_grand_final-m1",
-          "teamA": null,
-          "teamB": null,
-          "winner": null,
-          "score": null
+          "teamA": "Shangai & Ryk",
+          "teamB": "Ino & Hof",
+          "winner": "Shangai & Ryk",
+          "score": "1-0"
         }
       ]
     }
