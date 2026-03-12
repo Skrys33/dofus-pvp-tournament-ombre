@@ -164,6 +164,44 @@ const resolveWinnerBracketWins = (players, tournament) => {
   return winsByName
 }
 
+const resolveRankingTieBreakMatches = (tournament) => {
+  if (Array.isArray(tournament?.ranking_tiebreakers)) return tournament.ranking_tiebreakers
+  if (Array.isArray(tournament?.ranking_tiebreak_matches)) return tournament.ranking_tiebreak_matches
+  if (Array.isArray(tournament?.rankingTieBreakers)) return tournament.rankingTieBreakers
+  return []
+}
+
+const resolveRankingTieBreakKey = (teamA, teamB) => {
+  if (typeof teamA !== 'string' || typeof teamB !== 'string') return null
+  const first = teamA.trim()
+  const second = teamB.trim()
+  if (!first || !second) return null
+  return [first, second].sort((a, b) => a.localeCompare(b)).join('||')
+}
+
+const resolveRankingTieBreakByPair = (tournament) => {
+  const tieBreakByPair = new Map()
+  for (const match of resolveRankingTieBreakMatches(tournament)) {
+    const teamA = match?.teamA
+    const teamB = match?.teamB
+    const winner = match?.winner
+    const key = resolveRankingTieBreakKey(teamA, teamB)
+    if (!key) continue
+    if (winner !== teamA && winner !== teamB) continue
+    tieBreakByPair.set(key, winner)
+  }
+  return tieBreakByPair
+}
+
+const resolveRankingTieBreakComparison = (teamA, teamB, tieBreakByPair) => {
+  const key = resolveRankingTieBreakKey(teamA, teamB)
+  if (!key) return 0
+  const winner = tieBreakByPair.get(key)
+  if (winner === teamA) return -1
+  if (winner === teamB) return 1
+  return 0
+}
+
 function App() {
   const participantCount = Array.isArray(playersData.players) ? playersData.players.length : 0
   const [liveStatusByName, setLiveStatusByName] = useState({})
@@ -259,6 +297,7 @@ function RankingPage({ liveStatusByName }) {
   const rankedPlayers = useMemo(() => {
     const pointsByName = resolvePlayerPoints(playersData.players, playersData.tournament)
     const winnerBracketWinsByName = resolveWinnerBracketWins(playersData.players, playersData.tournament)
+    const rankingTieBreakByPair = resolveRankingTieBreakByPair(playersData.tournament)
     const list = playersData.players
       .map((player) => ({
         ...player,
@@ -268,6 +307,8 @@ function RankingPage({ liveStatusByName }) {
       .sort((a, b) => {
         if (b.points !== a.points) return b.points - a.points
         if (b.winnerBracketWins !== a.winnerBracketWins) return b.winnerBracketWins - a.winnerBracketWins
+        const rankingTieBreakOrder = resolveRankingTieBreakComparison(a.name, b.name, rankingTieBreakByPair)
+        if (rankingTieBreakOrder !== 0) return rankingTieBreakOrder
         return a.name.localeCompare(b.name)
       })
 
@@ -276,7 +317,17 @@ function RankingPage({ liveStatusByName }) {
     let currentRank = 0
 
     const ranked = list.map((player, index) => {
-      if (player.points !== previousPoints || player.winnerBracketWins !== previousWinnerBracketWins) {
+      const previousPlayer = index > 0 ? list[index - 1] : null
+      const isDirectlyTieBrokenWithPrevious =
+        previousPlayer !== null
+          ? resolveRankingTieBreakComparison(previousPlayer.name, player.name, rankingTieBreakByPair) !== 0
+          : false
+
+      if (
+        player.points !== previousPoints ||
+        player.winnerBracketWins !== previousWinnerBracketWins ||
+        isDirectlyTieBrokenWithPrevious
+      ) {
         currentRank = index + 1
         previousPoints = player.points
         previousWinnerBracketWins = player.winnerBracketWins

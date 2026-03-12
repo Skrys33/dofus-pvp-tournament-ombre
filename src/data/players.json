@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-12 18:10",
+  "lastUpdated": "2026-03-12 18:23",
   "players": [
     {
       "name": "Skrys",
@@ -191,6 +191,15 @@
     ],
     "champion": null,
     "losers_champion": null,
+    "ranking_tiebreakers": [
+      {
+        "id": "ranking_tiebreak-7-8",
+        "teamA": "Fifi & Restimon",
+        "teamB": "Rouxcarnage & Christ",
+        "winner": "Fifi & Restimon",
+        "score": "1-0"
+      }
+    ],
     "grand_final": [
       {
         "id": "grand_final-m1",
